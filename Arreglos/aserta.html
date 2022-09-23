@@ -9,16 +9,29 @@
 </head>
 <body>
     <div class="container">
-    	<h2 class="text-center mt-4 mb-4">Convert Excel to HTML Table using JavaScript</h2>
+    	<h2 class="text-center mt-4 mb-4">Conciliación Acerta</h2>
     	<div class="card">
-    		<div class="card-header"><b>Select Excel File</b></div>
+    		<div class="card-header"><b>Estado de cuenta</b></div>
     		<div class="card-body">
-    			
                 <input type="file" id="excel_file" />
-
     		</div>
+            
     	</div>
-        <div id="excel_data" class="mt-5"></div>
+        <div id="excel_data" class="mt-5" style="overflow: scroll; height: 300px;"></div>
+        <br><br>
+        <div class="card">
+    		<div class="card-header"><b>Cicas</b></div>
+    		<div class="card-body">
+                <input type="file" id="excel_file" />
+    		</div>
+            <div id="excel_data" class="mt-5" style="overflow: scroll; height: 300px;"></div>
+    	</div>
+        <br><br>
+        <div class="card">
+                <button style="background-color: rgb(49, 49, 224); border-color: rgb(49, 49, 224); font-size: medium; color: white;">
+                    Conciliar
+                </button>
+    	</div>
     </div>
 </body>
 </html>
