@@ -68,50 +68,55 @@ document.getElementById('button').addEventListener("click", () => {
                  
 
 
-                  let fianzas;
+                  let fianzas ="<table width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Campo</th><th>BERKLEY FIANZAS</th><th>SICAS</th></tr>";
                   let resultObject;
                   let sicas;
                   var encontrar;
 
                   comparar = (berk, sic) => {
                     if(berk == sic){
-                        fianzas=fianzas+" SON IGUALES </p>"
+                        fianzas=fianzas+"<tr style='color:green;'>"
                     }else{
-                        fianzas=fianzas+" SON DIFERENTES </p>"
+                        fianzas=fianzas+"<tr style='background-color:var(--bs-rojo2);'>"
                     }
                   }
+                  
+
                   //Encontrar un valor ahí adentro
-                  search = (key, inputArray) => {
+                  search = (key, inclu, inputArray) => {
                       for (let i=0; i < inputArray.length; i++) {
                           if (inputArray[i].FIANZA == key) {
+                            if (inputArray[i].INCLUSION == inclu) {
                             encontrar=1;
-                            fianzas= fianzas+"<p> Num Póliza: "+inputArray[i].FIANZA+" de Berkley es igual a "+key+" de SICAS "; 
-                            fianzas= fianzas+"<p> Prima Neta: "+inputArray[i]["PRIMA NETA"]+" de Berkley es igual a "+sicas["PrimaNeta"]+" de SICAS "; 
+                            fianzas= fianzas+"<tr style='background-color:var(--bs-azul3)'><td>Num póliza</td><td>"+inputArray[i].FIANZA+"</td><td>"+key+"</td></tr>";
+                            fianzas= fianzas+"<tr style='background-color:var(--bs-azul4)'><td>Inclusión</td><td>"+inputArray[i].INCLUSION+"</td><td>"+inclu+"</td></tr>";
                             comparar(inputArray[i]["PRIMA NETA"], sicas["PrimaNeta"]);
-                            fianzas= fianzas+"<p> % Comisión: "+inputArray[i]["% COMISION"]+" de Berkley es igual a "+sicas["% Participacion"]+" de SICAS "; 
+                            fianzas=fianzas+"<td>Prima Neta</td><td>"+inputArray[i]["PRIMA NETA"]+"</td><td>"+sicas["PrimaNeta"]+"</td></tr>";
                             comparar(inputArray[i]["% COMISION"], sicas["% Participacion"]);
-                            fianzas= fianzas+"<p> Iva: "+inputArray[i]["IVA"]+" de Berkley es igual a no sé de SICAS "; 
-                            comparar(inputArray[i]["IVA"], 0);
-                            fianzas= fianzas+"<p> Importe: "+inputArray[i].COMISIONES+" de Berkley es igual a "+sicas["Importe"]+" de SICAS "; 
+                            fianzas= fianzas+"<td>% Comisión</td><td>"+inputArray[i]["% COMISION"]+"</td><td>"+sicas["% Participacion"]+"</td></tr>";
                             comparar(inputArray[i].COMISIONES, sicas["Importe"]);
-                            fianzas= fianzas+"<p> Total comisión: "+inputArray[i]["TOTAL COMISION"]+" de Berkley es igual a "+sicas["Importe pendiente"]+" de SICAS";
-                            comparar(inputArray[i]["TOTAL COMISION"], sicas["Importe pendiente"]);
-                            fianzas= fianzas+"<br>" 
-                            document.getElementById("jsondata").innerHTML = fianzas;
+                            fianzas= fianzas+"<td>Importe</td><td>"+inputArray[i].COMISIONES+"</td><td>"+sicas["Importe"]+"</td></tr>";
+                            document.getElementById("jsondata").innerHTML = fianzas+"<tr><td></td><td></td><td></td></tr></table>";
                               return inputArray[i];
+                            }
                           }
                       }
                       if(encontrar==0){
-                      fianzas= fianzas+"<p>"+key+" de SICAS  no se encontró</p>";
+                      fianzas= fianzas+"<tr style='background-color:var(--bs-rojo1)'><td>Num póliza</td><td>No se encontró</td><td>"+key+"-"+inclu+"</td></tr>";
+                      "<p>"+key+" de SICAS  no se encontró</p>";
                       }
                       encontrar=0; 
                     }
-                    for(var j=0; j< objetoSICAS.length; j++){
+                    for(var j=0; j<objetoSICAS.length; j++){
                         var pol = objetoSICAS[j].Poliza.split('-'),
                         poliza = pol[2];
+                        inclusion=pol[3];
+                        if(typeof inclusion === 'undefined'){
+                            inclusion=0;
+                        }
                         num = +poliza;
                         sicas=objetoSICAS[j];
-                      resultObject = search(num, objetoBerkley);
+                      resultObject = search(num, inclusion, objetoBerkley);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
                     }
@@ -119,16 +124,6 @@ document.getElementById('button').addEventListener("click", () => {
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
                     }
-
-                    //console.log(num);
-                    //console.log(num2);
-                   /* if(num==num2){
-                        document.getElementById("jsondata2").innerHTML = num+" "+ num2+" Son iguales";
-                        console.log("Son iguales");
-                    }else{
-                        document.getElementById("jsondata2").innerHTML = num+" "+ num2+" Son diferentes";
-                        console.log("Son diferentes");
-                    }*/
                             }
                 );
              
