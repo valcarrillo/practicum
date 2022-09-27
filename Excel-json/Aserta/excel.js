@@ -106,6 +106,7 @@ document.getElementById('button').addEventListener("click", () => {
                       }
                       encontrar=0; 
                     }
+                    //Moddifcación de polizas
                     for(var j=0; j< objetoSICAS.length; j++){
                         var pol = objetoSICAS[j].Poliza.split('-'),
                         poliza = pol[2];
