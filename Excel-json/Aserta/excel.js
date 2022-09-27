@@ -24,7 +24,7 @@ document.getElementById('button').addEventListener("click", () => {
          console.log(workbook1);        
          workbook1.SheetNames.forEach(sheet => {
             //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
-                objetoBerkley = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:3}); //Nombre del array
+                objetoBerkley = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:1}); //Nombre del array
              console.log(objetoBerkley);
             // document.getElementById("jsondata").innerHTML = JSON.stringify(objetoBerkley,undefined,4)
 
