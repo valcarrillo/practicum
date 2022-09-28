@@ -40,25 +40,25 @@ document.getElementById('button').addEventListener("click", () => {
              workbook2.SheetNames.forEach(sheet => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
 
-                  let fianzas;
+                    //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
                   let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' hidden> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
                   let resultObject;
                   let sicas;
                   var encontrar;                 
 
                   //Encontrar un valor ahí adentro
-                  search = (key, inclu, inputArray) => {
-                      for (let i=0; i < inputArray.length; i++) {
-                          if (inputArray[i].FIANZA == key) {
-                            if (inputArray[i].INCLUSION == inclu) {
+                  search = (key, inclu, ArrayBerkley) => {
+                      for (let i=0; i < ArrayBerkley.length; i++) {
+                          if (ArrayBerkley[i].FIANZA == key) {
+                            if (ArrayBerkley[i].INCLUSION == inclu) {
                             encontrar=1;
-                            //comparar(inputArray[i]["PRIMA NETA"], sicas["PrimaNeta"]);
-                            if(inputArray[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
-                                var diferencia= Math.round((inputArray[i]["PRIMA NETA"] -sicas["PrimaNeta"])*100)/100;
+                            //compara las primas netas y si son diferentes las mete en la tabla.
+                            if(ArrayBerkley[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
+                                var diferencia= Math.round((ArrayBerkley[i]["PRIMA NETA"] -sicas["PrimaNeta"])*100)/100;
                                 console.log("La diferencia es de"+diferencia);
-                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td></tr>";
+                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+ArrayBerkley[i].FIANZA+"-"+ArrayBerkley[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td></tr>";
                             }
-                              return inputArray[i];
+                              return ArrayBerkley[i];
                             }
                           }
                       }
@@ -67,7 +67,7 @@ document.getElementById('button').addEventListener("click", () => {
                       }
                       encontrar=0; 
                     }
-                    for(var j=0; j<objetoSICAS.length; j++){
+                    for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
                         var pol = objetoSICAS[j].Poliza.split('-'),
                         poliza = pol[2];
                         inclusion=pol[3];
@@ -79,9 +79,9 @@ document.getElementById('button').addEventListener("click", () => {
                       resultObject = search(num, inclusion, objetoBerkley);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
-                     document.getElementById("jsondata").innerHTML = tabla+"</table>";
+                     document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
-                    ExportToExcel('xlsx');
+                    ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                     if(resultObject==0){
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
@@ -102,7 +102,7 @@ document.getElementById('button').addEventListener("click", () => {
     
 });
 
-function ExportToExcel(type, fn, dl) {
+function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('BerkleyFianzas');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     return dl ?
