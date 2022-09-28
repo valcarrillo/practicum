@@ -48,10 +48,15 @@ document.getElementById('button').addEventListener("click", () => {
                   search = (key, inclu, ArrayBerkley) => {
                       
                     }
-                    for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS 
-                        var poliza=objetoSICAS[j].Poliza;
-                        var comision = objetoSICAS.Tipo_endoso;
-                        console.log(objetoSICAS[j]);
+                    for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS                     
+                        for(i=0;i<objetoSICAS[j];i++){
+                            if(objetoSICAS[j].Poliza == objetoSICAS[i].Poliza){
+                                
+                            }
+                        }
+                        console.log(poliza)
+                        
+
                         /*var pol = objetoSICAS[j].Poliza.split('-'),
                         poliza = pol[2];
                         inclusion=pol[3];
