@@ -25,7 +25,7 @@ document.getElementById('button').addEventListener("click", () => {
          workbook1.SheetNames.forEach(sheet => {
             //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
             objetoAserta = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:1}); //Nombre del array
-             console.log(objetoAserta); 
+            console.log(objetoAserta); 
          });
 
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
@@ -41,19 +41,19 @@ document.getElementById('button').addEventListener("click", () => {
                   let sicas;
                   var encontrar;
 
-                  comparar = (berk, sic) => {
-                    if(berk == sic){
+                  comparar = (aser, sic) => {
+                    if(aser == sic){
                         fianzas=fianzas+"<tr style='color:green;'>"
                     }else{
                         fianzas=fianzas+"<tr style='background-color:var(--bs-rojo2);'>"
                     }
                   }
-                  
-
-                  //Encontrar un valor ahí adentro
+                 //Encontrar un valor ahí adentro
                   search = (key, inclu, inputArray) => {
                       for (let i=0; i < inputArray.length; i++) {
                           if (inputArray[i].FIANZA == key) {
+                            inputArray[i].
+                            console.log(inputArray[i].INCLUSION)
                             if (inputArray[i].INCLUSION == inclu) {
                             encontrar=1;
                             fianzas= fianzas+"<tr style='background-color:var(--bs-azul3)'><td>Num póliza</td><td>"+inputArray[i].FIANZA+"</td><td>"+key+"</td></tr>";
@@ -84,7 +84,7 @@ document.getElementById('button').addEventListener("click", () => {
                             inclusion=0;
                         }
                         num = +poliza;
-                        sicas=objetoSICAS[j];
+                        sicas=objetoSICAS[j];//renglon de sicas
                       resultObject = search(num, inclusion, objetoAserta);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
