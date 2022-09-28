@@ -34,6 +34,8 @@
   --bs-azul3: #8495cb;
   --bs-azul4: #547bb4;
   --bs-azul5: #045ba6;
+  --bs-rojo1: #9c0b0be7;
+  --bs-rojo2: #ff00007e;
   --bs-primary-rgb: 29, 128, 159;
   --bs-secondary-rgb: 236, 184, 7;
   --bs-success-rgb: 25, 135, 84;
@@ -223,7 +225,9 @@ div {
     color: #626870;
 }
 .row {
-  display: flex;
+  flex: 70%;
+  padding: 10px;
+  background-color: white;
 }
 
 /* Create two equal columns that sits next to each other */
@@ -236,4 +240,3 @@ div {
   flex: 50%;
   padding: 10px;
 }
-
