@@ -27,21 +27,6 @@ document.getElementById('button').addEventListener("click", () => {
                 objetoBerkley = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:3}); //Nombre del array
              console.log(objetoBerkley);
             // document.getElementById("jsondata").innerHTML = JSON.stringify(objetoBerkley,undefined,4)
-
-                //Forma de obtener un renglón
-               //console.log(objetoBerkley[2]);
-               //convtir un subarray en array
-              /*  const array1 = objetoBerkley[2];
-                num2 = +objetoBerkley[2].FIANZA;
-                console.log("Berkley");
-                console.log("Fianza: "+objetoBerkley[2].FIANZA);
-                console.log("Prima Neta: "+objetoBerkley[2]["PRIMA NETA"]);
-                console.log("El % de comisión es: "+objetoBerkley[2]["% COMISION"]);
-                console.log("IVA: "+objetoBerkley[2]["IVA"]);
-                console.log("Los gastos fueron de: "+objetoBerkley[2].GASTOS);
-                console.log("El total de comisión es: "+objetoBerkley[2]["TOTAL COMISION"]); //[] Para nombres compuestos
-                console.log("Movimiento: "+objetoBerkley[2].MOVIMIENTO);*/
-                // console.log(array1);   
          });
 
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
@@ -53,31 +38,19 @@ document.getElementById('button').addEventListener("click", () => {
              //console.log(workbook2);
              workbook2.SheetNames.forEach(sheet => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
-                 // console.log(objetoSICAS);
-                 // document.getElementById("jsondata2").innerHTML = JSON.stringify(objetoSICAS,undefined,4);
-                  //console.log(objetoSICAS[7].Poliza);
-                   /*
-                  console.log("SICAS");
-                  console.log("Número de Póliza: "+num);
-                  console.log("Prima Neta: "+objetoSICAS[2]["PrimaNeta"]);
-                  console.log("% Participacion: "+objetoSICAS[2]["% Participacion"]);
-                  console.log("Importe: "+objetoSICAS[2]["Importe"]);
-                  console.log("Importe pendiente: "+objetoSICAS[2]["Importe pendiente"]);
-                  console.log("Endoso: "+objetoSICAS[2]["Endoso"]);*/
 
-                 
-
-
-                  let fianzas ="<table width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Campo</th><th>BERKLEY FIANZAS</th><th>SICAS</th></tr>";
+                  let fianzas;
+                  let tabla ="<table width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
                   let resultObject;
                   let sicas;
                   var encontrar;
 
                   comparar = (berk, sic) => {
-                    if(berk == sic){
-                        fianzas=fianzas+"<tr style='color:green;'>"
+                    if(berk != sic){
+                        var diferencia= berk-sic;
+                        tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo2);'>"+diferencia+"</td></tr></table>";
                     }else{
-                        fianzas=fianzas+"<tr style='background-color:var(--bs-rojo2);'>"
+                        fianzas=" ";
                     }
                   }
                   
@@ -88,22 +61,22 @@ document.getElementById('button').addEventListener("click", () => {
                           if (inputArray[i].FIANZA == key) {
                             if (inputArray[i].INCLUSION == inclu) {
                             encontrar=1;
-                            fianzas= fianzas+"<tr style='background-color:var(--bs-azul3)'><td>Num póliza</td><td>"+inputArray[i].FIANZA+"</td><td>"+key+"</td></tr>";
-                            fianzas= fianzas+"<tr style='background-color:var(--bs-azul4)'><td>Inclusión</td><td>"+inputArray[i].INCLUSION+"</td><td>"+inclu+"</td></tr>";
-                            comparar(inputArray[i]["PRIMA NETA"], sicas["PrimaNeta"]);
-                            fianzas=fianzas+"<td>Prima Neta</td><td>"+inputArray[i]["PRIMA NETA"]+"</td><td>"+sicas["PrimaNeta"]+"</td></tr>";
-                            comparar(inputArray[i]["% COMISION"], sicas["% Participacion"]);
-                            fianzas= fianzas+"<td>% Comisión</td><td>"+inputArray[i]["% COMISION"]+"</td><td>"+sicas["% Participacion"]+"</td></tr>";
-                            comparar(inputArray[i].COMISIONES, sicas["Importe"]);
-                            fianzas= fianzas+"<td>Importe</td><td>"+inputArray[i].COMISIONES+"</td><td>"+sicas["Importe"]+"</td></tr>";
-                            document.getElementById("jsondata").innerHTML = fianzas+"<tr><td></td><td></td><td></td></tr></table>";
+                            //comparar(inputArray[i]["PRIMA NETA"], sicas["PrimaNeta"]);
+                            if(inputArray[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
+                                var diferencia= berk-sic;
+                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo2);'>"+diferencia+"</td></tr>";
+                            }
+                           // fianzas=fianzas+"<td>Prima Neta</td><td>"+inputArray[i]["PRIMA NETA"]+"</td><td>"+sicas["PrimaNeta"]+"</td></tr>";
+                            //comparar(inputArray[i]["% COMISION"], sicas["% Participacion"]);
+                            //fianzas= fianzas+"<td>% Comisión</td><td>"+inputArray[i]["% COMISION"]+"</td><td>"+sicas["% Participacion"]+"</td></tr>";
+                            //comparar(inputArray[i].COMISIONES, sicas["Importe"]);
+                           // fianzas= fianzas+"<td>Importe</td><td>"+inputArray[i].COMISIONES+"</td><td>"+sicas["Importe"]+"</td></tr>";
                               return inputArray[i];
                             }
                           }
                       }
                       if(encontrar==0){
-                      fianzas= fianzas+"<tr style='background-color:var(--bs-rojo1)'><td>Num póliza</td><td>No se encontró</td><td>"+key+"-"+inclu+"</td></tr>";
-                      "<p>"+key+" de SICAS  no se encontró</p>";
+                      tabla= tabla+"<tr style='background-color:var(--bs-rojo1)'><td>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td>NO SE ENCONTRÓ</td>";
                       }
                       encontrar=0; 
                     }
@@ -119,6 +92,7 @@ document.getElementById('button').addEventListener("click", () => {
                       resultObject = search(num, inclusion, objetoBerkley);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
+                      document.getElementById("jsondata").innerHTML = tabla+"</table>";
                     }
                     if(resultObject==0){
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
