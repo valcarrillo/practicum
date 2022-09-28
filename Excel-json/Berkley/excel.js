@@ -27,7 +27,6 @@ document.getElementById('button').addEventListener("click", () => {
             //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
                 objetoBerkley = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:3}); //Nombre del array
              console.log(objetoBerkley);
-            // document.getElementById("jsondata").innerHTML = JSON.stringify(objetoBerkley,undefined,4)
          });
 
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
@@ -36,7 +35,6 @@ document.getElementById('button').addEventListener("click", () => {
             fileReader.onload = (event)=>{
              let data2 = event.target.result;
              let workbook2 = XLSX.read(data2,{type:"binary"});
-             //console.log(workbook2);
              workbook2.SheetNames.forEach(sheet => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
 
@@ -91,14 +89,13 @@ document.getElementById('button').addEventListener("click", () => {
              
             }
         } else{
-
+             document.getElementById("jsondata").innerHTML = "No se adjuntó nada en SICAS";
         }
-        // document.getElementById("jsondata2").innerHTML = "No se adjuntó nada";
+       
         }
     }else{
-        //document.getElementById("jsondata").innerHTML = "No se adjuntó nada";
+        document.getElementById("jsondata").innerHTML = "No se adjuntó el Estado de Cuenta de Berkley";
     }
-    
     
 });
 
