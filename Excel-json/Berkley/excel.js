@@ -1,4 +1,5 @@
 //https://levelup.gitconnected.com/how-to-convert-excel-file-into-json-object-by-using-javascript-9e95532d47c5
+//convertir en EXCEL https://codepedia.info/javascript-export-html-table-data-to-excel
 let selectedFile;
 let selectedFile2;
 console.log(window.XLSX);
@@ -40,20 +41,10 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
 
                   let fianzas;
-                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
+                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' hidden> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
                   let resultObject;
                   let sicas;
-                  var encontrar;
-
-                  comparar = (berk, sic) => {
-                    if(berk != sic){
-                        var diferencia= berk-sic;
-                        tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo2);'>"+diferencia+"</td></tr></table>";
-                    }else{
-                        fianzas=" ";
-                    }
-                  }
-                  
+                  var encontrar;                 
 
                   //Encontrar un valor ahí adentro
                   search = (key, inclu, inputArray) => {
@@ -67,11 +58,6 @@ document.getElementById('button').addEventListener("click", () => {
                                 console.log("La diferencia es de"+diferencia);
                                 tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+inputArray[i].FIANZA+"-"+inputArray[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td></tr>";
                             }
-                           // fianzas=fianzas+"<td>Prima Neta</td><td>"+inputArray[i]["PRIMA NETA"]+"</td><td>"+sicas["PrimaNeta"]+"</td></tr>";
-                            //comparar(inputArray[i]["% COMISION"], sicas["% Participacion"]);
-                            //fianzas= fianzas+"<td>% Comisión</td><td>"+inputArray[i]["% COMISION"]+"</td><td>"+sicas["% Participacion"]+"</td></tr>";
-                            //comparar(inputArray[i].COMISIONES, sicas["Importe"]);
-                           // fianzas= fianzas+"<td>Importe</td><td>"+inputArray[i].COMISIONES+"</td><td>"+sicas["Importe"]+"</td></tr>";
                               return inputArray[i];
                             }
                           }
@@ -93,8 +79,9 @@ document.getElementById('button').addEventListener("click", () => {
                       resultObject = search(num, inclusion, objetoBerkley);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
-                      document.getElementById("jsondata").innerHTML = tabla+"</table>";
+                     document.getElementById("jsondata").innerHTML = tabla+"</table>";
                     }
+                    ExportToExcel('xlsx');
                     if(resultObject==0){
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
@@ -108,7 +95,6 @@ document.getElementById('button').addEventListener("click", () => {
         }
         // document.getElementById("jsondata2").innerHTML = "No se adjuntó nada";
         }
-        
     }else{
         //document.getElementById("jsondata").innerHTML = "No se adjuntó nada";
     }
@@ -116,49 +102,10 @@ document.getElementById('button').addEventListener("click", () => {
     
 });
 
-function exportData(){
-    /* Get the HTML data using Element by Id */
-    var table = document.getElementById("BerkleyFianzas");
- 
-    /* Declaring array variable */
-    var rows =[];
- 
-      //iterate through rows of table
-    for(var i=0,row; row = table.rows[i];i++){
-        //rows would be accessed using the "row" variable assigned in the for loop
-        //Get each cell value/column from the row
-        column1 = row.cells[0].innerText;
-        column2 = row.cells[1].innerText;
-        column3 = row.cells[2].innerText;
-        column4 = row.cells[3].innerText;
-        column5 = row.cells[4].innerText;
- 
-    /* add a new records in the array */
-        rows.push(
-            [
-                column1,
-                column2,
-                column3,
-                column4,
-                column5
-            ]
-        );
- 
-        }
-        csvContent = "data:text/csv;charset=utf-8,";
-         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-        rows.forEach(function(rowArray){
-            row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
- 
-        /* create a hidden <a> DOM node and set its download attribute */
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Berkley_Fianzas_Comparacion.csv");
-        document.body.appendChild(link);
-         /* download the data file named "Stock_Price_Report.csv" */
-        link.click();
-}
-
+function ExportToExcel(type, fn, dl) {
+    var elt = document.getElementById('BerkleyFianzas');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+      XLSX.writeFile(wb, fn || ('Berkley_Fianzas_Comparacion_Mayo.' + (type || 'xlsx')));
+ }
