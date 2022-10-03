@@ -49,9 +49,9 @@ document.getElementById('button').addEventListener("click", () => {
                   search = (key, ArreyAserta) => {
                     
                       for (let i=0; i < ArreyAserta.length; i++) {
-                        var polizaAserta = String(ArreyAserta[i]["No Fianza/\nCertificado"])
+                        var polizaAserta = String(ArreyAserta[i]["No Fianza/ ↵Certificado"])
                           if (polizaAserta == key) {
-                            encontrar=1;
+                            encontrar++;
                             if(ArreyAserta[i]["Prima Neta"] != sicas["PrimaNeta"]){
                                 var diferencia= Math.round((ArreyAserta[i]["Prima Neta"] -sicas["PrimaNeta"])*100)/100;
                                 console.log("La diferencia es de"+diferencia);
