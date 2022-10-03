@@ -12,7 +12,7 @@ document.getElementById('inputSicas').addEventListener("change", (event) => {// 
 )
 
 let objetoSICAS; //Array de objetos en el que se va a guarar SICAS
-let objetoBerkley; //Array de objetos en el que se va a guardar Berkley
+let objetoAserta; //Array de objetos en el que se va a guardar Berkley
 
 document.getElementById('button').addEventListener("click", () => {
     var num, num2;
@@ -25,8 +25,8 @@ document.getElementById('button').addEventListener("click", () => {
          console.log(workbook1);        
          workbook1.SheetNames.forEach(sheet => {
             //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
-                objetoBerkley = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:3}); //Nombre del array
-             console.log(objetoBerkley);
+                objetoAserta = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:1}); //Nombre del array
+             console.log(objetoAserta);
          });
 
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
@@ -44,37 +44,39 @@ document.getElementById('button').addEventListener("click", () => {
                   let sicas;
                   var encontrar;                 
 
-                  //Encontrar políza obtenida de sicas en objetoAserta
-                  search = (key, inclu, ArrayBerkley) => {
-                      
-                    }
-                    for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS                     
-                        for(i=0;i<objetoSICAS[j];i++){
-                            if(objetoSICAS[j].Poliza == objetoSICAS[i].Poliza){
-                                
+                  //Encontrar un valor ahí adentro
+                  search = (key, ArrayBerkley) => {
+                      /*for (let i=0; i < ArrayBerkley.length; i++) {
+                          if (ArrayBerkley[i].FIANZA == key) {
+                            if (ArrayBerkley[i].INCLUSION == inclu) {
+                            encontrar=1;
+                            //compara las primas netas y si son diferentes las mete en la tabla.
+                            if(ArrayBerkley[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
+                                var diferencia= Math.round((ArrayBerkley[i]["PRIMA NETA"] -sicas["PrimaNeta"])*100)/100;
+                                console.log("La diferencia es de"+diferencia);
+                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+ArrayBerkley[i].FIANZA+"-"+ArrayBerkley[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td></tr>";
                             }
-                        }
-                        console.log(poliza)
-                        
-
-                        /*var pol = objetoSICAS[j].Poliza.split('-'),
-                        poliza = pol[2];
-                        inclusion=pol[3];
-                        if(typeof inclusion === 'undefined'){
-                            inclusion=0;
-                        }
-                        num = +poliza;
-                        sicas=objetoSICAS[j];
-                      resultObject = search(num, inclusion, objetoBerkley);
+                              return ArrayBerkley[i];
+                            }
+                          }
+                      }
+                      if(encontrar==0){
+                      tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"-"+inclu+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
+                      }
+                      encontrar=0;*/ 
+                    }
+                    for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
+                        var poliza = Number(objetoSICAS[j].Poliza)
+                      resultObject = search(poliza, objetoAserta)
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
-                     document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN*/
+                     document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
-                    /*ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                    //ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                     if(resultObject==0){
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
-                    }*/
+                    }
                             }
                 );
              
