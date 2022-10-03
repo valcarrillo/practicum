@@ -39,29 +39,35 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
 
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' hidden> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
+                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th></tr>";
                   let resultObject;
                   let sicas;
-                  var encontrar;                 
+                  var encontrar;
+                  let ArraydeEndosos;    
+                  var err="NO SE ENCONTRÓ LA PÓLIZA";
 
                   //Encontrar un valor ahí adentro
-                  search = (key, inclu, ArrayBerkley) => {
+                  search = (key, inclu, endo, ArrayBerkley) => {
                       for (let i=0; i < ArrayBerkley.length; i++) {
                           if (ArrayBerkley[i].FIANZA == key) {
                             if (ArrayBerkley[i].INCLUSION == inclu) {
-                            encontrar=1;
-                            //compara las primas netas y si son diferentes las mete en la tabla.
-                            if(ArrayBerkley[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
+                                if (ArrayBerkley[i].MOVIMIENTO == endo) {
+                                encontrar=1;
+                                //compara las primas netas y si son diferentes las mete en la tabla.
+                                // if(ArrayBerkley[i]["PRIMA NETA"] != sicas["PrimaNeta"]){
                                 var diferencia= Math.round((ArrayBerkley[i]["PRIMA NETA"] -sicas["PrimaNeta"])*100)/100;
                                 console.log("La diferencia es de"+diferencia);
                                 tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+ArrayBerkley[i].FIANZA+"-"+ArrayBerkley[i].INCLUSION+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td></tr>";
-                            }
+                            //}
                               return ArrayBerkley[i];
+                                }else{
+                                    err="NO SE ENCONTRÓ EL ENDOSO";
+                                }
                             }
                           }
                       }
                       if(encontrar==0){
-                      tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"-"+inclu+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
+                      tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"-"+inclu+"-"+endo+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Importe"]+"</td><td style='background-color:var(--bs-rojo2)'>"+err+"</td></tr>";
                       }
                       encontrar=0; 
                     }
@@ -73,13 +79,19 @@ document.getElementById('button').addEventListener("click", () => {
                             inclusion=0;
                         }
                         num = +poliza;
+                        var endo=objetoSICAS[j].Endoso;
+                        if(typeof end === 'undefined'){
+                            endo=1; //Si el endoso no está en SICAS entonces se registra como 1
+                        }else{
+                            endo=endo+1;
+                        }
                         sicas=objetoSICAS[j];
-                      resultObject = search(num, inclusion, objetoBerkley);
+                      resultObject = search(num, inclusion, endo, objetoBerkley);
                       console.log(resultObject);
                       console.log("Número de registros en sicas: "+j);
                      document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
-                    ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                   // ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                     if(resultObject==0){
                         document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
