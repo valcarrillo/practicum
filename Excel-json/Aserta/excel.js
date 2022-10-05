@@ -49,11 +49,10 @@ let objetoFinal;
 document.getElementById('button').addEventListener("click", () => {
     var num, num2;
     num_ECT = document.getElementById("select").value
-    //console.log(num_ECT);
+
 
     switch (num_ECT){
         case '0':
-            document.getElementById("jsondata").innerHTML = "No se selecciono número de Estados de cuenta";
             break;
         //Caso de tener 1 estado de cuenta
         case '1':
@@ -159,7 +158,6 @@ document.getElementById('button').addEventListener("click", () => {
             }else{
                 document.getElementById("jsondata").innerHTML = "No se adjuntó el Estado de Cuenta de Berkley";
             }
-            break;
             //Caso 2 Estados de Cuente
             case '2':
                 if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
@@ -285,7 +283,6 @@ document.getElementById('button').addEventListener("click", () => {
                 }else{
                     document.getElementById("jsondata").innerHTML = "No se adjuntó el Estado de Cuenta de Aserta";
                 }
-                break;
                 //Caso tener 3 estados de cuenta
                 case '3':
                 if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
@@ -430,7 +427,6 @@ document.getElementById('button').addEventListener("click", () => {
                 }else{
                     document.getElementById("jsondata").innerHTML = "No se adjuntó el 1° Estado de Cuenta de Aserta";
                 }
-                break;
                 //Caso de tener 4 Estados de Cuenta
                 case '4':
                     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
@@ -596,7 +592,6 @@ document.getElementById('button').addEventListener("click", () => {
                     }else{
                         document.getElementById("jsondata").innerHTML = "No se adjuntó el 1° Estado de Cuenta de Aserta";
                     }
-                    break;
                     case '5':
                         if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
                             let fileReader = new FileReader();
@@ -782,8 +777,7 @@ document.getElementById('button').addEventListener("click", () => {
                         }else{
                             document.getElementById("jsondata").innerHTML = "No se adjuntó el 1° Estado de Cuenta de Aserta";
                         }                        
-                        break;
-                    }    
+             }    
 });
 
 function ExportToExcel(type, fn, dl) {// función que convierte a excel
