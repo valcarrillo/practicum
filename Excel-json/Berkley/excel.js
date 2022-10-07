@@ -13,8 +13,9 @@ document.getElementById('inputSicas').addEventListener("change", (event) => {// 
 
 let objetoSICAS; //Array de objetos en el que se va a guarar SICAS
 let objetoBerkley; //Array de objetos en el que se va a guardar Berkley
-var messicas=0, aniosicas=0;
-const month = ["Nada","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Augosto","Septiembre","Octubre","Noviembre","Diciembre"];
+var fechamax = new Date("2000-01-02"); // (YYYY-MM-DD)
+var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
+const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
 
 document.getElementById('button').addEventListener("click", () => {
     var num, num2;
@@ -41,11 +42,11 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                   console.log(objetoSICAS);
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Total Comisión</th><th>Diferencia comisión</th><th>Diferencia en:</th></tr>";
+                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' hidden> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Total Comisión</th><th>Diferencia de Comisión</th><th>No coincide:</th></tr>";
                   let resultObject;
                   let sicas;
                   var encontrar;
-                  let ArraydeEndosos;    
+                  let tablanoencontrados="";    //Hay dos tablas, la de error y no encontrados. Se unen al final para tener más orden.
                   var err="NO SE ENCONTRÓ LA PÓLIZA";
 
                   //Encontrar un valor ahí adentro
@@ -55,10 +56,10 @@ document.getElementById('button').addEventListener("click", () => {
                           if (ArrayBerkley[i].FIANZA == key) {
                             if (ArrayBerkley[i].INCLUSION == inclu) {
                                 if (ArrayBerkley[i].MOVIMIENTO == endo) {
-                                //compara las primas netas y si son diferentes las mete en la tabla.
-                                if(ArrayBerkley[i]["COMISIONES"] != sicas["Importe"]){
                                     encontrar=1;
-                                    var diferencia= Math.abs(Math.round((ArrayBerkley[i]["COMISIONES"] -sicas["Importe"])*100)/100);
+                                //compara las primas netas y si son diferentes las mete en la tabla.
+                                    if(ArrayBerkley[i]["COMISIONES"] != sicas["Importe"]){
+                                    var diferencia= Math.abs(Math.round((ArrayBerkley[i]["COMISIONES"] -sicas["Importe"])*10000)/10000);
                                     var tipodif;
                                     if(ArrayBerkley[i]["PRIMA NETA"] !=sicas["PrimaNeta"] && ArrayBerkley[i]["% COMISION"] !=sicas["% Participacion"]){
                                         tipodif="Prima Neta y % Comisión";
@@ -67,11 +68,11 @@ document.getElementById('button').addEventListener("click", () => {
                                     }else if(ArrayBerkley[i]["% COMISION"] !=sicas["% Participacion"]){
                                         tipodif="% Comisión";
                                     }else{
-                                        tipodif=" ";
+                                        tipodif="Total Comisión";
                                     }
                                     console.log("La diferencia es de"+diferencia);
-                                    tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+ArrayBerkley[i].FIANZA+"-"+(ArrayBerkley[i].INCLUSION)+"-"+(endo-1)+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Tipo Comision"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:var(--bs-rojo1)'>"+diferencia+"</td><td>"+tipodif+"</td></tr>"
-                            }
+                                    tabla=tabla+"<tr><td style='background-color:#8495cb'>"+ArrayBerkley[i].FIANZA+"-"+(ArrayBerkley[i].INCLUSION)+"-"+(endo-1)+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Tipo Comision"]+"</td><td>"+sicas["Importe"]+"</td><td style='color:#9c0b0be7'>"+diferencia+"</td><td>"+tipodif+"</td></tr>"
+                                }
                               return ArrayBerkley[i];
                                 }else{
                                     err="NO SE ENCONTRÓ LA PÓLIZA";
@@ -79,9 +80,10 @@ document.getElementById('button').addEventListener("click", () => {
                             }
                           }
                       }
-                      if(encontrar==0){
-                      tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"-"+inclu+"-"+(endo-1)+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Tipo Comision"]+"</td><td>"+sicas["Importe"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                      }
+                      if(encontrar==0){ // Encontrar es una bandera. Si no se encuentra, se incluye lo de abajo
+                      tablanoencontrados= tablanoencontrados+"<tr><td style='background-color:#8495cb'>"+key+"-"+inclu+"-"+(endo-1)+"</td><td>"+sicas["PrimaNeta"]+"</td><td>"+sicas["% Participacion"]+"</td><td>"+sicas["Tipo Comision"]+"</td><td>"+sicas["Importe"]+"</td><td></td><td style='background-color:#ff00007e'>NO SE ENCONTRÓ</td></tr>";
+                        return ArrayBerkley;
+                        }
                       encontrar=0; 
                     }
                     
@@ -89,19 +91,17 @@ document.getElementById('button').addEventListener("click", () => {
                         document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                     }else{
                         for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                            var fechas =objetoSICAS[j]["Fecha Pago Recibo"].split('/');
-                            anio=fechas[2];
-                            mes=fechas[1];
-                            console.log("Mes: "+mes+" Año: "+anio);
-                            var pol = objetoSICAS[j].Poliza.split('-');
-                            if(anio>aniosicas){
-                                aniosicas= +anio;
-                                messicas= +mes;
-                            }else if(anio==aniosicas){
-                                if(mes>messicas){
-                                        messicas= +mes;
-                                    } 
+                            //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.
+                            var fechas =objetoSICAS[j]["Fecha Pago Recibo"]; 
+                            const [dia, mes, anio] = fechas.split('/');
+                            const fecha1 = new Date(+anio, +mes - 1, +dia);
+                            if(fecha1>fechamax){
+                                fechamax=fecha1;
                             }
+                            if(fecha1<fechamin){
+                                fechamin=fecha1;
+                            }
+                            //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
                             var pol = objetoSICAS[j].Poliza.split('-'),
                             poliza = pol[2];
                             inclusion= pol[3];
@@ -118,12 +118,13 @@ document.getElementById('button').addEventListener("click", () => {
                                 endo= +endo +1;
                             }
                             sicas=objetoSICAS[j];
+                            //Manda a llamar a la función de búsqueda
                         resultObject = search(num, inclusion, endo, objetoBerkley);
                         console.log(resultObject);
                         console.log("Número de registros en sicas: "+j);
-                        document.getElementById("jsondata").innerHTML = tabla+"</table>   Mes: "+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
-                        }
-                    // ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                        document.getElementById("jsondata").innerHTML = tabla+tablanoencontrados+"</table>  DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                    }
+                        ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         if(resultObject==0){
                             document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
@@ -147,7 +148,8 @@ document.getElementById('button').addEventListener("click", () => {
 function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('BerkleyFianzas');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    var nombre ='CONCILIACIÓN BERKLEY FIANZAS DEL '+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+".";
     return dl ?
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
-      XLSX.writeFile(wb, fn || ('Berkley_Fianzas_Comparacion_Mayo.' + (type || 'xlsx')));
+      XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
  }
