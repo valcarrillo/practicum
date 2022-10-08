@@ -56,15 +56,13 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-bg: #f0f3f7c9;
 }
 a {
   color: #1D809F;
   text-decoration: none;
 }
-a:hover {
-  color: #17667f;
-}
+
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
@@ -74,17 +72,6 @@ div {
   display: block;
   box-sizing: border-box;
 }
-.masthead {
-    min-height: 4rem;
-    padding-right: 1.5rem !important;
-    padding-left: 1.5rem !important;
-    padding-top: 0.2rem;
-    color:white;
-    background: var(--bs-azul3);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
  
   .align-items-center {
     align-items: center !important;
@@ -207,6 +194,30 @@ div {
         letter-spacing: 0;
         color: #383e45;
         margin-bottom: 9px;
+        
+}
+h3 {
+  margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 30px;
+      letter-spacing: 0;
+      color: #383e45;
+      margin-bottom: 9px;
+      
+}
+h2 {
+  margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 30px;
+      letter-spacing: 0;
+      color: #383e45;
+      margin-bottom: 9px;
+      
+}
+h3:hover {
+  color: var(--bs-azul5);
 }
 .tools__item__content {
     font-size: 12px;
@@ -214,16 +225,14 @@ div {
     color: #626870;
 }
 .row {
-  flex: 70%;
-  padding: 10px;
-  background-color: white;
+  flex: 90%;
 }
 
 /* Create two equal columns that sits next to each other */
 .column {
   flex: 50%;
   padding: 10px;
-  background-color: var(--bs-azul2);
+
 }
 .d1 {
   flex: 50%;
@@ -231,4 +240,71 @@ div {
 }
 
 
-/*Nuevo menu*/
+/* Wrapper */
+
+#wrapper > * > .inner {
+  width: 100%;
+  max-width: 68em;
+  margin: 0 auto;
+  padding: 0 2.5em;
+}
+
+  @media screen and (max-width: 736px) {
+
+    #wrapper > * > .inner {
+      padding: 0 1.25em;
+    }
+
+  }
+  /* Header */
+
+	#header {
+		padding: 2em 0 0.1em 0 ;
+   
+	}
+
+		#header .logo {
+			display: block;
+			border-bottom: 0;
+			color: inherit;
+			font-weight: 900;
+			letter-spacing: 0.35em;
+			margin: 0 0 2.5em 0;
+			text-decoration: none;
+			text-transform: uppercase;
+			display: inline-block;
+		}
+
+			#header .logo > * {
+				display: inline-block;
+				vertical-align: middle;
+			}
+
+			#header .logo .symbol {
+				margin-right: 0.65em;
+			}
+
+				#header .logo .symbol img {
+					display: block;
+					width: 2em;
+					height: 2em;
+				}
+
+		@media screen and (max-width: 736px) {
+
+			#header {
+				padding: 4em 0 0.1em 0 ;
+			}
+
+		}
+
+    .btn-square-md {
+			width: 200px !important;
+			max-width: 100% !important;
+			max-height: 100% !important;
+			height: 200px !important;
+			text-align: center;
+			padding: 0px;
+			font-size:12px;
+      background-color: var(--bs-azul4);
+			}

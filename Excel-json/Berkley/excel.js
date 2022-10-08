@@ -152,4 +152,4 @@ function ExportToExcel(type, fn, dl) {// función que convierte a excel
     return dl ?
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
       XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
- }
+}
