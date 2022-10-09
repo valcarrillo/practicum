@@ -122,7 +122,7 @@ document.getElementById('button').addEventListener("click", () => {
                         resultObject = search(num, inclusion, endo, objetoBerkley);
                         console.log(resultObject);
                         console.log("Número de registros en sicas: "+j);
-                        document.getElementById("jsondata").innerHTML = tabla+tablanoencontrados+"</table>  DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                        document.getElementById("jsondata").innerHTML = tabla+tablanoencontrados+"</table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
                         ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         if(resultObject==0){

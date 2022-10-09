@@ -42,13 +42,27 @@
             <div class="col-md-4">
               <div class="column">
                 <h2>Berkley</h2>
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
+                <!--<input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >-->
               </div>
+              <form action="#">
+                <div class="input-file-container">  
+                  <input class="input-file" id="inputA" type="file" accept=".xls,.xlsx">
+                  <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
+                </div>
+                <p class="file-return"></p>
+              </form>
             </div>
             <div class="col-md-4">
               <div class="column">
                 <h2>SICAS</h2>
-                <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx"  >
+                <!--<input class="form-control" type="file" id="inputSicas2" accept=".xls,.xlsx"  >-->
+                <form action="#">
+                  <div class="input-file-container">  
+                    <input class="input-file2" id="inputSicas" type="file" accept=".xls,.xlsx">
+                    <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
+                  </div>
+                  <p class="file-return2"></p>
+                </form>
               </div>
             </div>
             <div class="col-md-2">
@@ -56,7 +70,9 @@
             </div>
         </div>
     </div>
-    
+
+
+
     <div class="row">
       <div class="col-md-1"></div>
       <pre class="d1" id="jsondata"></pre>
@@ -64,5 +80,41 @@
     </div>
 </body>
 <script src="excel.js"></script>
+<!-- SCRIPT PARA QUE LOS BOTONES SE VEAN BONITOS -->
+<script>
+  document.querySelector("html").classList.add('js');
+
+var fileInput  = document.querySelector( ".input-file" ),
+    fileInput2  = document.querySelector( ".input-file2" ),    
+    button     = document.querySelector( ".input-file-trigger" ),
+    button2     = document.querySelector( ".input-file-trigger" ),
+    the_return = document.querySelector(".file-return");
+    the_return2 = document.querySelector(".file-return2");
+      
+button.addEventListener( "keydown", function( event ) {  
+    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+        fileInput.focus();  
+    }  
+});
+button.addEventListener( "click", function( event ) {
+   fileInput.focus();
+   return false;
+});  
+fileInput.addEventListener( "change", function( event ) {  
+    the_return.innerHTML = this.value;  
+}); 
+button2.addEventListener( "keydown", function( event ) {  
+    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+        fileInput.focus();  
+    }  
+});
+button2.addEventListener( "click", function( event ) {
+   fileInput.focus();
+   return false;
+});  
+fileInput2.addEventListener( "change", function( event ) {  
+    the_return2.innerHTML = this.value;  
+}); 
+</script>
 
 </html>
