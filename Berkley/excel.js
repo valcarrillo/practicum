@@ -18,7 +18,7 @@ var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
 const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
 
 document.getElementById('button').addEventListener("click", () => {
-    var num, num2;
+    var num;
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
         let fileReader = new FileReader();
         fileReader.readAsBinaryString(selectedFile);
@@ -144,12 +144,12 @@ document.getElementById('button').addEventListener("click", () => {
     }
     
 });
-
+//fn: filename
 function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('BerkleyFianzas');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     var nombre ='CONCILIACIÓN BERKLEY FIANZAS DEL '+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+".";
-    return dl ?
+    return dl ? //It will attempt to force a client-side download.
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
       XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
 }
