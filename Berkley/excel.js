@@ -90,9 +90,9 @@ document.getElementById('button').addEventListener("click", () => {
                     if(typeof objetoSICAS[0].Poliza === 'undefined' || objetoBerkley[0].FIANZA==='undefined'){
                         document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                     }else{
-                        for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
+                        for(var j=0; j<objetoBerkley.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
                             //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.
-                            var fechas =objetoSICAS[j]["Fecha Pago Recibo"]; 
+                            var fechas =objetoBerkley[j]["FECHA APLICACION"]; 
                             const [dia, mes, anio] = fechas.split('/');
                             const fecha1 = new Date(+anio, +mes - 1, +dia);
                             if(fecha1>fechamax){
@@ -102,7 +102,7 @@ document.getElementById('button').addEventListener("click", () => {
                                 fechamin=fecha1;
                             }
                             //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
-                            var pol = objetoSICAS[j].Poliza.split('-'),
+                            var pol = objetoBerkley[j].Poliza.split('-'),
                             poliza = pol[2];
                             inclusion= pol[3];
                             if(typeof inclusion === 'undefined'){
