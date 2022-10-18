@@ -42,7 +42,7 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                   console.log(objetoSICAS);
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDENa> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Total Comisión</th><th>Diferencia de Comisión</th><th>No coincide:</th></tr>";
+                  let tabla ="<table id='BerkleyFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN> <tr><th>Póliza</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Total Comisión</th><th>Diferencia de Comisión</th><th>No coincide:</th></tr>";
                   let resultObject;
                   let sicas;
                   var encontrar;
