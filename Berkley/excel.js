@@ -92,7 +92,7 @@ document.getElementById('button').addEventListener("click", () => {
                     }else{
                         for(var j=0; j<objetoSICAS.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
                             //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.
-                            var fechas =objetoSICAS[j]["Fecha Pago Recibo"]; 
+                            var fechas =objetoBerkley[j]["FECHA APLICACION"]; 
                             const [dia, mes, anio] = fechas.split('/');
                             const fecha1 = new Date(+anio, +mes - 1, +dia);
                             if(fecha1>fechamax){
