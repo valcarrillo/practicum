@@ -111,15 +111,15 @@ document.getElementById('button').addEventListener("click", () => {
                                 inclusion= +inclusion;
                             }
                             num = +poliza;
-                            var endo=objetoSICAS[j].Endoso;
+                            var endo=objetoBerkley[j].Endoso;
                             if(typeof endo === 'undefined'){
                                 endo= +1; //Si el endoso no está en SICAS entonces se registra como 1
                             }else{
                                 endo= +endo +1;
                             }
-                            sicas=objetoSICAS[j];
+                            sicas=objetoBerkley[j];
                             //Manda a llamar a la función de búsqueda
-                        resultObject = search(num, inclusion, endo, objetoBerkley);
+                        resultObject = search(num, inclusion, endo, objetoSICAS);
                         console.log(resultObject);
                         console.log("Número de registros en sicas: "+j);
                         document.getElementById("jsondata").innerHTML = tabla+tablanoencontrados+"</table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
