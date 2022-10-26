@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
         crossorigin="anonymous">
     <title>CHUBB</title>
-    <title>Berkley</title>
-     <!-- Favicon-->
-     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
      <!-- Font Awesome icons (free version)-->
      <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
      <!-- Simple line icons-->
@@ -21,45 +18,102 @@
      <!-- Core theme CSS (includes Bootstrap)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link href="../style.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 </head>
-<div id="wrapper">
-  <!-- Header -->
-  <header id="header">
-    <div class="inner">
+<body>
+  <div id="wrapper">
+            <!-- Header -->
+            <header id="header">
+              <div class="inner">
 
-        <!-- Logo -->
-            <a class="logo" href="../index.html">
-                <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Comparador | CHUBB</span>
-            </a>
-    </div>
-</header>
+                  <!-- Logo -->
+                      <a class="logo" href="../index.html">
+                          <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Comparador | CHUBB Fianzas</span>
+                      </a>
+              </div>
+          </header>
+
     <!--Demás-->
-    <div class="conatiner mt-5">
+    <div class="conatiner mt-2">
         <div class="row">
           <div class="col-md-1"></div>
             <div class="col-md-4">
               <div class="column">
                 <h2>CHUBB</h2>
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
+                <!--<input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >-->
               </div>
+              <form action="#">
+                <div class="input-file-container">  
+                  <input class="input-file" id="inputA" type="file" accept=".xls,.xlsx">
+                  <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
+                </div>
+                <p class="file-return"></p>
+              </form>
             </div>
             <div class="col-md-4">
               <div class="column">
                 <h2>SICAS</h2>
-                <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx"  >
+                <!--<input class="form-control" type="file" id="inputSicas2" accept=".xls,.xlsx"  >-->
               </div>
-            </div>
+                <form action="#">
+                  <div class="input-file-container">  
+                    <input class="input-file2" id="inputSicas" type="file" accept=".xls,.xlsx">
+                    <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
+                  </div>
+                  <p class="file-return2"></p>
+                </form>
+              </div>
             <div class="col-md-2">
                 <button class="btn btn-primary" id="button">Comparar</button>
             </div>
         </div>
     </div>
+
+
+
     <div class="row">
       <div class="col-md-1"></div>
       <pre class="d1" id="jsondata"></pre>
     </div> 
-</div>
+    </div>
 </body>
 <script src="chubb.js"></script>
+<!-- SCRIPT PARA QUE LOS BOTONES SE VEAN BONITOS -->
+<!-- Traído de https://speckyboy.com/custom-file-upload-fields/ Ejemplo 8: Flat UI Input File -->
+<script>
+  document.querySelector("html").classList.add('js');
+
+var fileInput  = document.querySelector( ".input-file" ),
+    fileInput2  = document.querySelector( ".input-file2" ),    
+    button     = document.querySelector( ".input-file-trigger" ),
+    button2     = document.querySelector( ".input-file-trigger" ),
+    the_return = document.querySelector(".file-return");
+    the_return2 = document.querySelector(".file-return2");
+      
+button.addEventListener( "keydown", function( event ) {  
+    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+        fileInput.focus();  
+    }  
+});
+button.addEventListener( "click", function( event ) {
+   fileInput.focus();
+   return false;
+});  
+fileInput.addEventListener( "change", function( event ) {  
+    the_return.innerHTML = this.value;  
+}); 
+button2.addEventListener( "keydown", function( event ) {  
+    if ( event.keyCode == 13 || event.keyCode == 32 ) {  
+        fileInput.focus();  
+    }  
+});
+button2.addEventListener( "click", function( event ) {
+   fileInput.focus();
+   return false;
+});  
+fileInput2.addEventListener( "change", function( event ) {  
+    the_return2.innerHTML = this.value;  
+}); 
+</script>
 
 </html>
