@@ -42,7 +42,7 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                   console.log(objetoSICAS);
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                  let tabladiferencias ="<table id='CHUBBFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Póliza</th><th>Endoso</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Comisiones</th><th>Diferencia de Comisión</th><th>No coincide:</th></tr>";
+                  let tabladiferencias ="<table id='CHUBBFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001'> <tr><th>Nombre Aegurado</th><th>Póliza</th><th>Endoso</th><th>Serie</th><th>Prima Neta</th><th>% Comisión</th><th>Tipo Comisión</th><th>Comisiones</th><th>Diferencia de Comisión</th><th>No coincide:</th></tr>";
                   let resultObject;
                   let CHUBB;
                   let noencontrados=[];
@@ -57,17 +57,24 @@ document.getElementById('button').addEventListener("click", () => {
                         encontrar=0;
                         var SICASendoso=ArraySICAS[i].Endoso;
                         if (ArraySICAS[i].Poliza == poliza) {
-                            console.log("Si coincide las polizas");
                             if (SICASendoso == CHUBB.Endoso) {
-                               // if (SICASendoso == endo) {
+                               if (ArraySICAS[i].Serie == CHUBB.Serie) {
+                                    if (ArraySICAS[i]["Tipo Comision"] == "Comisión Base o de Neta") {
+                                        importeCHUBB=Math.round(CHUBB.ComisionMto*100)/100;
+                                        tipocom="Comisión base o neta"
+                                    }else if(ArraySICAS[i]["Tipo Comision"] == "Comisión de Recargos"){
+                                        importeCHUBB=Math.round(CHUBB.ComisionSobreRecargoMto*100)/100;
+                                        tipocom="Comisión sobre recargo"
+                                    }else{
+                                        importeCHUBB=Math.round(CHUBB.ComisionMto*100)/100;
+                                        tipocom="Comisión especial"
+                                    }
                                     encontrar=1;
 
                                 //compara las primas netas y si son diferentes las mete en la tabla.
                                 //FUNCIÓN QUE HACE EL TIPO DE CAMBIO
                                 importeSicas=Math.round(ArraySICAS[i]["Importe"]*ArraySICAS[i].TC*100)/100;// Esto es para que solo cuente los primeros dos decimales
-                                importeCHUBB=Math.round(CHUBB.ComisionMto*100)/100;
-                                console.log("IMPORTE SICAS: "+importeSicas);
-                                console.log("IMPORTE CHUBB: "+importeCHUBB);
+                              
                                     
                                     var diferencia= Math.round((importeCHUBB -importeSicas)*100)/100;
                                     var tipodif;
@@ -82,16 +89,17 @@ document.getElementById('button').addEventListener("click", () => {
                                     }else{
                                         tipodif="Total Comisión";
                                     }
-                                    console.log("La diferencia es de"+diferencia);
                                 if(importeCHUBB != importeSicas){
-                                    tabladiferencias=tabladiferencias+"<tr><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>Comisión base</td><td>"+CHUBB.ComisionMto+"</td><td style='color:#9c0b0be7'>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                                    tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.Serie+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+tipocom+"</td><td>"+CHUBB.ComisionMto+"</td><td style='color:#9c0b0be7'>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                                 }else{
-                                    tablaiguales=tablaiguales+"<tr><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>Comisión Base</td><td>"+CHUBB.ComisionMto+"</td><td>"+diferencia+"</td><td></td></tr>";
+                                    tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.Serie+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+tipocom+"</td><td>"+CHUBB.ComisionMto+"</td><td>"+diferencia+"</td><td></td></tr>";
                                 }
                               return ArraySICAS;
                                 //}else{
                                    // err="NO SE ENCONTRÓ LA PÓLIZA";
                                // }
+                            
+                            }
                            }
                           }
                     }
@@ -103,11 +111,70 @@ document.getElementById('button').addEventListener("click", () => {
                         }
                       encontrar=0; 
                     }
-                    
+
+                    //////////////////
+                    //Encontrar un valor ahí adentro
+                  search2 = (poliza, CHUBB, ArraySICAS) => {
+                    for (let i=0; i < ArraySICAS.length; i++) {
+                        encontrar=0;
+                        var SICASendoso=ArraySICAS[i].Endoso;
+                        if (ArraySICAS[i].Poliza == poliza) {
+                            if (ArraySICAS[i].Serie == CHUBB.Serie) {
+                                if (ArraySICAS[i]["Tipo Comision"] == "Comisión Base o de Neta") {
+                                    importeCHUBB=Math.round(CHUBB.ComisionMto*100)/100;
+                                    tipocom="Comisión base o neta"
+                                }else if(ArraySICAS[i]["Tipo Comision"] == "Comisión de Recargos"){
+                                    importeCHUBB=Math.round(CHUBB.ComisionSobreRecargoMto*100)/100;
+                                    tipocom="Comisión sobre recargo"
+                                }else{
+                                    importeCHUBB=Math.round(CHUBB.ComisionMto*100)/100;
+                                    tipocom="Comisión especial"
+                                }
+                                encontrar=1;
+
+                            //compara las primas netas y si son diferentes las mete en la tabla.
+                            //FUNCIÓN QUE HACE EL TIPO DE CAMBIO
+                            importeSicas=Math.round(ArraySICAS[i]["Importe"]*ArraySICAS[i].TC*100)/100;// Esto es para que solo cuente los primeros dos decimales
+                          
+                                
+                                var diferencia= Math.round((importeCHUBB -importeSicas)*100)/100;
+                                var tipodif;
+                                if(CHUBB.PNetaMto !=ArraySICAS[i]["PrimaNeta"] && CHUBB["% Comision"] !=ArraySICAS[i]["% Participacion"]){
+                                    tipodif="Prima Neta y % Comisión";
+                                }else if(CHUBB.PNetaMto !=ArraySICAS[i]["PrimaNeta"]){
+                                    tipodif="Prima Neta";
+                                }else if(CHUBB["% Comision"] !=ArraySICAS[i]["% Participacion"]){
+                                    tipodif="% Comisión";
+                                //}else if(CHUBB["TIPO CAMBIO"] !=ArraySICAS[i].TC){
+                                        //tipodif="Tipo de Cambio";
+                                }else{
+                                    tipodif="Total Comisión";
+                                }
+                            if(importeCHUBB != importeSicas){
+                                tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.Serie+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+tipocom+"</td><td>"+CHUBB.ComisionMto+"</td><td style='color:#9c0b0be7'>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                            }else{
+                                tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.Serie+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+tipocom+"</td><td>"+CHUBB.ComisionMto+"</td><td>"+diferencia+"</td><td></td></tr>";
+                            }
+                          return ArraySICAS;
+                            //}else{
+                               // err="NO SE ENCONTRÓ LA PÓLIZA";
+                           // }
+                        
+                        }
+                          }
+                    }
+                      if(encontrar==0){ // Encontrar es una bandera. Si no se encuentra, se incluye lo de abajo
+                        tablanoencontrados= tablanoencontrados+"<tr><td>"+CHUBB.Asegurado+"</td><td style='background-color:#8495cb'>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td>"+CHUBB.Serie+"</td><td>"+CHUBB.PNetaMto+"</td><td>"+CHUBB["% Comision"]+"</td><td>Comisión Base</td><td>"+CHUBB.ComisionMto+"</td><td></td><td>NO SE ENCONTRÓ</td></tr>";
+                        return CHUBB;
+                        }
+                      encontrar=0; 
+                    }
+
+                    ////////////////
                     var pnetamto =0;
                     var comisionmto=0, comisionrecargo=0;
                     var claveanterior="", polizaanterior="", endosoanterior="";
-                    var repeticion=1;
+                    var registers=0;
                     let objetoNuevochubb=[];
                     let jsonObj;
                     let Sicassinendoso=[];
@@ -131,20 +198,25 @@ document.getElementById('button').addEventListener("click", () => {
                         console.log(Sicassinendoso);
                         console.log("Sicasconendoso");
                         console.log(Sicasconendoso);
+                        jsonObj={"Asegurado": "NO SIRVE SOLO PARA PRUEBA", "ClaveId": "AAA", "PolizaId": "00000000","Endoso": "00000", "Recibo": "0", "TotalRecibo": "0","PNetaMto": "000", "ComisionMto": "00000", "ComisionSobreRecargoMto": "000", "TipoMov": "0"};
+                        objetoCHUBB.push(jsonObj);
+                        jsonObj={};
+                        console.log(objetoCHUBB);
                         for(var j=0; j<objetoCHUBB.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en CHUBB
                             
                             if(objetoCHUBB[j].hasOwnProperty('PolizaId')){
-                                //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.                        
-                                var fechas =objetoCHUBB[j].Fecha.split(' '); 
-                                const [mes, dia, anio] = fechas[0].split('/');
-                                const fecha1 = new Date(+anio, +mes - 1, +dia);
-                                if(fecha1>fechamax){
-                                    fechamax=fecha1;
+                                //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx. 
+                                if(objetoCHUBB[j].hasOwnProperty('Fecha')){                       
+                                    var fechas =objetoCHUBB[j].Fecha.split(' '); 
+                                    const [mes, dia, anio] = fechas[0].split('/');
+                                    const fecha1 = new Date(+anio, +mes - 1, +dia);
+                                    if(fecha1>fechamax){
+                                        fechamax=fecha1;
+                                    }
+                                    if(fecha1<fechamin){
+                                        fechamin=fecha1;
+                                    }
                                 }
-                                if(fecha1<fechamin){
-                                    fechamin=fecha1;
-                                }
-
 
                             //console.log(objetoCHUBB[j]);
                             CHUBB=objetoCHUBB[j];
@@ -161,19 +233,22 @@ document.getElementById('button').addEventListener("click", () => {
                             if(clave==claveanterior && poliza==polizaanterior && endoso==endosoanterior){
                                 pnetamto=pnetamto+objetoCHUBB[j].PNetaMto;
                                 comisionmto=comisionmto+objetoCHUBB[j].ComisionMto;
-                               // console.log(objetoCHUBB[j].ComisionSobreRecargoMto);
                                 comisionrecargo=comisionrecargo+objetoCHUBB[j].ComisionSobreRecargoMto;
-                                repeticion++;
                             }else{
-                                porcentajecomision=Math.round((comisionmto/pnetamto)*100);
-                                jsonObj={"ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Recibo": objetoCHUBB[j-1].Recibo,"PNetaMto": Math.round(pnetamto*100)/100, "ComisionMto": Math.round(comisionmto*100)/100, "ComisionSobreRecargoMto": Math.round(comisionrecargo*100)/100, "% Comision": porcentajecomision};
+                                if(pnetamto!=0){
+                                    porcentajecomision=Math.round((comisionmto/pnetamto)*100);
+                                }else{
+                                    porcentajecomision="";
+                                }
+                                serie="00"+objetoCHUBB[j-1].Recibo+"/00"+objetoCHUBB[j-1].TotalRecibo;
+                                jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "ComisionMto": Math.round(comisionmto*100)/100, "ComisionSobreRecargoMto": Math.round(comisionrecargo*100)/100, "% Comision": porcentajecomision, "TipoMov": objetoCHUBB[j-1].TipoMov};
                                 //console.log(jsonObj);
                                 objetoNuevochubb.push(jsonObj);
                                // console.log(objetoNuevochubb);
                                 jsonObj={};
                                 pnetamto=objetoCHUBB[j].PNetaMto;
                                 comisionmto=objetoCHUBB[j].ComisionMto;
-                                repeticion=1;
+                                comisionrecargo=objetoCHUBB[j].ComisionSobreRecargoMto;
                             }
                             polizaanterior=poliza;
                             endosoanterior=endoso;
@@ -181,16 +256,20 @@ document.getElementById('button').addEventListener("click", () => {
                             
                             }
                         }
+                        console.log(objetoNuevochubb);
                      for(var j=1; j<objetoNuevochubb.length; j++){
                             poliza=objetoNuevochubb[j].ClaveId+" "+objetoNuevochubb[j].PolizaId;
-                            console.log(objetoNuevochubb[j]);
+                            //console.log(objetoNuevochubb[j]);
                             resultObject = search(poliza, objetoNuevochubb[j], Sicasconendoso);
+                            registers++;
                      }
-                     for(var j=0; j<noencontrados.length; j++){
-                        search(poliza, 0,  noencontrados[j], Sicassinendoso);
-                     }
+                    for(var j=0; j<noencontrados.length; j++){
+                        poliza=noencontrados[j].ClaveId+" "+noencontrados[j].PolizaId;
+                        //console.log(noencontrados[j]);
+                        search2(poliza, noencontrados[j], Sicassinendoso);
+                    }
                        
-                        document.getElementById("jsondata").innerHTML = tabladiferencias+tablanoencontrados+tablaiguales+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(j-1)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                        document.getElementById("jsondata").innerHTML = tabladiferencias+tablanoencontrados+tablaiguales+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(registers)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
                         //ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         if(resultObject==0){
