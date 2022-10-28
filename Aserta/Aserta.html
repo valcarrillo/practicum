@@ -22,6 +22,7 @@
     <link href="../style.css" rel="stylesheet" />
 </head>
 <body>
+
   <div id="wrapper">
     <!-- Header -->
     <header id="header">
@@ -53,11 +54,34 @@
                     </select>
                   </div>
                 <br>
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
+                <script>
+//SACAR URL DE BOTONES
+function getUrl(){
+                  var url = document.getElementById('inputA').files[0].name;
+                  console.log(url)
+              }
+                </script>
+                
+                <div class="file-select" id="src-file1" >
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  onchange="getURL()">
+              </div>
+              <br><br>
+              <div class="file-select" id="src-file1_2" >
                 <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx" >
-                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx">
-                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx">
-                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx">
+              </div>
+              <br><br>
+              <div class="file-select" id="src-file3" >
+                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx" >
+              </div>
+              <br><br>
+              <div class="file-select" id="src-file4" >
+                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx" >
+              </div>
+              <br><br>
+              <div class="file-select" id="src-file5" >
+                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx" >
+              </div>
+              
               </div>
             </div>
             <div class="col-md-4">
@@ -78,5 +102,7 @@
   </div>
 </body>
 <script src="excel.js"></script>
+
+
 
 </html>

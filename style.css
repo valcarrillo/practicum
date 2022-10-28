@@ -349,6 +349,51 @@ h3:hover {
       }
       
       
+    /*Estilos Botones adjuntar archivos*/
+    .file-select {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .file-select::before {
+      background-color: #5678EF;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      content: 'Seleccionar'; /* testo por defecto */
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+    
+    .file-select input[type="file"] {
+      opacity: 0;
+
+      display: inline-block;
+    }
+    #src-file1::before {
+      content: 'Seleccionar Estado de Cuenta 1';
+    }
+    #src-file1_2::before {
+      content: 'Seleccionar Estado de Cuenta 2';
+    }
+    #src-file3::before {
+      content: 'Seleccionar Estado de Cuenta 3';
+    }
+    #src-file4::before {
+      content: 'Seleccionar Estado de Cuenta 4';
+    }
+    #src-file5::before {
+      content: 'Seleccionar Estado de Cuenta 5';
+    }
+    #src-file2::before {
+      content: 'Seleccionar BD Sicas';
+    }
+    
       
       
       
