@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link href="../style.css" rel="stylesheet" />
 </head>
-<body>
+<body style="overflow-x: hidden;">
   <div id="wrapper">
     <!-- Header -->
     <header id="header">
@@ -53,13 +53,6 @@
                     </select>
                     <br>
                   </div>
-                  <div>
-                    <h6 style="align-items: center;">¿Hay tipo de Cambio?</h6>
-                      <input type="radio" name="TC" value="no" id="NTC"checked > No
-                      <input type="radio" name="TC" value="si" id="STC"> Sí
-                      <input type="number" name="TC" id="TipoCambio" disabled>
-                  </div>
-                <br>
                 <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
                 <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx" >
                 <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx">
@@ -78,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="conatiner mt-5" style="max-width: 95%; ">
       <pre class="d1" id="jsondata"></pre>
       <!--<pre class="d1" id="jsondata2"></pre>-->
     </div> 
