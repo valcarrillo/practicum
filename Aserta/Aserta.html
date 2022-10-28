@@ -21,7 +21,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link href="../style.css" rel="stylesheet" />
 </head>
+<<<<<<< HEAD
 <body>
+
+=======
+<body style="overflow-x: hidden;">
+>>>>>>> 611b64edc1af3cbb9fa01dab5201d2181c216290
   <div id="wrapper">
     <!-- Header -->
     <header id="header">
@@ -51,13 +56,19 @@
                       <option value="4"style="text-align: center;">4</option>
                       <option value="5"style="text-align: center;">5</option>
                     </select>
+                    <br>
                   </div>
+<<<<<<< HEAD
                 <br>
+                
                 <div class="file-select" id="src-file1" >
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  onchange="getURL()">
               </div>
               <br><br>
               <div class="file-select" id="src-file1_2" >
+=======
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
+>>>>>>> 611b64edc1af3cbb9fa01dab5201d2181c216290
                 <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx" >
               </div>
               <br><br>
@@ -86,12 +97,14 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="conatiner mt-5" style="max-width: 95%; ">
       <pre class="d1" id="jsondata"></pre>
       <!--<pre class="d1" id="jsondata2"></pre>-->
     </div> 
   </div>
 </body>
 <script src="excel.js"></script>
+
+
 
 </html>
