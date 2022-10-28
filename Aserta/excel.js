@@ -232,11 +232,11 @@ document.getElementById('button').addEventListener("click", () => {
                                             resultObject = search(poliza, objetoSICAS)
                                         }
                                       
-                                     document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                     document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                     }
                                     ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                     if(resultObject==0){
-                                        document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+                                        document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";
                 
                                     }
                                             }
@@ -442,11 +442,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                 resultObject = search(poliza, objetoSICAS)
                                             }
                                           
-                                         document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                         document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                         }
                                         ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                         if(resultObject==0){
-                                            document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+                                            document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";
                     
                                         }
                                                 }
@@ -673,11 +673,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                     resultObject = search(poliza, objetoSICAS)
                                                 }
                                               
-                                             document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                             document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                             }
                                             ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                             if(resultObject==0){
-                                                document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+                                                document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";
                         
                                             }
                                                     }
@@ -925,11 +925,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                         resultObject = search(poliza, objetoSICAS)
                                                     }
                                                   
-                                                 document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                                 document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                                 }
                                                 ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                                 if(resultObject==0){
-                                                    document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+                                                    document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";
                             
                                                 }
                                                         }
@@ -1198,11 +1198,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                             resultObject = search(poliza, objetoSICAS)
                                                         }
                                                       
-                                                     document.getElementById("jsondata").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                                     document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                                     }
                                                     ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                                     if(resultObject==0){
-                                                        document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+                                                        document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";
                                 
                                                     }
                                                             }

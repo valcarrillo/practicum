@@ -21,12 +21,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link href="../style.css" rel="stylesheet" />
 </head>
-<<<<<<< HEAD
 <body>
 
-=======
-<body style="overflow-x: hidden;">
->>>>>>> 611b64edc1af3cbb9fa01dab5201d2181c216290
+
+<body style="overflow-x: hidden; background-color: #d4d4d4;">
   <div id="wrapper">
     <!-- Header -->
     <header id="header">
@@ -60,43 +58,77 @@
                   </div>
 
                 <br>
-                
+                <script>
+                  function sacarURLA(){
+                    let url = document.getElementById("inputA").value
+                    document.getElementById("url1").innerHTML = url
+                  }
+                  function sacarURLB(){
+                    let url = document.getElementById("inputB").value
+                    document.getElementById("url2").innerHTML = url
+                  }
+                  function sacarURLC(){
+                    let url = document.getElementById("inputC").value
+                    document.getElementById("url3").innerHTML = url
+                  }
+                  function sacarURLD(){
+                    let url = document.getElementById("inputD").value
+                    document.getElementById("url4").innerHTML = url
+                  }
+                  function sacarURLE(){
+                    let url = document.getElementById("inputE").value
+                    document.getElementById("url5").innerHTML = url
+                  }
+                  function sacarURLSICAS(){
+                    let url = document.getElementById("inputSicas").value
+                    document.getElementById("urlSicas").innerHTML = url
+                  }
+                </script>
+
                 <div class="file-select" id="src-file1" >
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  onchange="getURL()">
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx" onchange="sacarURLA()" >
+                
               </div>
-              <br><br>
+              <strong><pre class="d1" id="url1"></pre></strong>
               <div class="file-select" id="src-file1_2" >
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
-                <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx" >
+                <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx"onchange="sacarURLB()" >
               </div>
-              <br><br>
+              <strong><pre class="d1" id="url2"></pre></strong>
               <div class="file-select" id="src-file3" >
-                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx" >
+                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx" onchange="sacarURLC()">
               </div>
-              <br><br>
+              <strong><pre class="d1" id="url3"></pre></strong>
               <div class="file-select" id="src-file4" >
-                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx" >
+                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx" onchange="sacarURLD()">
               </div>
-              <br><br>
+              <strong><pre class="d1" id="url4"></pre></strong>
               <div class="file-select" id="src-file5" >
-                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx" >
+                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx" onchange="sacarURLE()">
               </div>
-              
+              <strong><pre class="d1" id="url5"></pre></strong>
               </div>
             </div>
+            
             <div class="col-md-4">
               <div class="column">
                 <h2>SICAS</h2>
-                <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx"  >
+                <div class="file-select" id="src-file2" >
+                  <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx" onchange="sacarURLSICAS()">
+                </div>
+                <strong><pre class="d1" id="urlSicas"></pre></strong>
+                <br>
+                <strong><b><pre class="d1" id="jsondata" style="color: red; font-size:14.5px; overflow-x: hidden;"></pre></b></strong>
+                
               </div>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary" id="button">Comparar</button>
+              <br><br>
+                <button class="btn btn-primary" id="button" style=" background-color: #5076b8; height: 15px; align-items: center;display: flex;">Comparar</button>
             </div>
         </div>
     </div>
     <div class="conatiner mt-5" style="max-width: 95%; ">
-      <pre class="d1" id="jsondata"></pre>
+      <pre class="d1" id="jsondata1" ></pre>
       <!--<pre class="d1" id="jsondata2"></pre>-->
     </div> 
   </div>
