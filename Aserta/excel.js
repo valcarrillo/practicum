@@ -51,7 +51,8 @@ document.getElementById('button').addEventListener("click", () => {
     var num, num2;
     num_ECT = document.getElementById("select").value
     //ESTRUCTURA TABLA
-    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia</th><th>Incidencia</th></tr>";
+    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia</th><th>Incidencia</th></tr>";
+    let tablaNA ="";
             switch (num_ECT){
                 case '0':
                     document.getElementById("jsondata").innerHTML = "No se selecciono el número de Estado de Cuenta";
@@ -107,7 +108,8 @@ document.getElementById('button').addEventListener("click", () => {
                                           
                                           //Obtener importe mxn
                                           importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                                          if (polizaSicas == key ) {
+                                          if (polizaSicas == key ) { 
+                                            encontrar++;
                                             if(comision == 'Comisión Base o de Neta'){
                                                 porcentaje = String(aserta["% de Comisión"])
                                                 comision_I = String(aserta["Comisión"])
@@ -120,12 +122,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                 porcentaje = String(aserta["%Incentivo Prod-Renov"])
                                                 comision_I = String(aserta["Incentivo Prod-Renov"])
                                             }
-                                            encontrar++;
                                             //Prima Neta
                                             if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
-                                                var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
-                                                errores =  errores + "- Prima Neta\n"
-                                                diferencias = String (diferencia) + "\n"
+                                               //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
+                                                                errores =  errores + "- Prima Neta\n"
+                                                                //diferencias = String (diferencia) + "\n"
                                             }
                                             //TC = MXN
                                             if (TC ==1){
@@ -135,9 +136,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                 diferencias = diferencias + String(diferenciaCB) + "\n"
                                                 errores = errores + "- Comisión \n"
                                             }
+                                            else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                diferencias = diferencias + String(diferenciaCB) + "\n"
+                                            }
                                             if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                 errores = errores + "- % Comisión \n"
                                             }
                                             //Comisión de Derechos
@@ -146,9 +151,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                 diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                 errores = errores + "- Comisión Gtos. Exp.\n"
                                             }
+                                            else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                diferencias = diferencias +  String(diferenciaCG) + "\n"
+                                            }
                                             if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                 errores = errores + "- % Comisión Maquila\n"
                                             }
                                              //Comisión Especial
@@ -157,9 +166,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                 diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                 errores = errores + "- Incentivo Prod-Renov\n"
                                             }
+                                            else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                diferencias = diferencias +  String(diferenciaIP) + "\n"
+                                            }
                                             if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                 errores = errores + "- %Incentivo Prod-Renov\n"
                                             }
                                             }
@@ -175,8 +188,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                     }
                                                 }
                                                 if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                    var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                    //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                     errores = errores + "- % Comisión \n"
                                                 }
                                                 //Comisión de Derechos
@@ -189,8 +202,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                     }
                                                 }
                                                 if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                    var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                    //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                     errores = errores + "- % Comisión Maquila\n"
                                                 }
                                                  //Comisión Especial
@@ -203,24 +216,24 @@ document.getElementById('button').addEventListener("click", () => {
                                                     }
                                                 }
                                                 if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                    var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                    //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                     errores = errores + "- %Incentivo Prod-Renov\n"
                                                 }                                              
                                                 
                                             }
                                             
-                                            if(errores != ""){
-                                               var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>"+ArreySICAS[i]['Serie']+"\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                               var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                               tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"
-                                            }
-                                            
+                                                var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                         }
                                       }
-                                      if(encontrar==0){
-                                        //--tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"</td><td>"+aserta["Prima Neta"]+"</td><td>"+aserta["% de Comisión"]+"</td><td>"+comision+"</td><td>"+aserta["Comisión"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                                        }
+                                      if (encontrar==0){
+                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
+                                        var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
+                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                      }
+                                      
                                         encontrar=0;
                                     }
 
@@ -232,7 +245,9 @@ document.getElementById('button').addEventListener("click", () => {
                                             resultObject = search(poliza, objetoSICAS)
                                         }
                                       
-                                     document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                     document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+
+                                     
                                     }
                                     ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                     if(resultObject==0){
@@ -289,7 +304,7 @@ document.getElementById('button').addEventListener("click", () => {
                                       objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                     
                                         //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                                     
+                                      
                                       let resultObject;
                                       let aserta;
                                       var encontrar;           
@@ -317,7 +332,8 @@ document.getElementById('button').addEventListener("click", () => {
                                               
                                               //Obtener importe mxn
                                               importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                                              if (polizaSicas == key ) {
+                                              if (polizaSicas == key ) { 
+                                                encontrar++;
                                                 if(comision == 'Comisión Base o de Neta'){
                                                     porcentaje = String(aserta["% de Comisión"])
                                                     comision_I = String(aserta["Comisión"])
@@ -330,12 +346,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                     porcentaje = String(aserta["%Incentivo Prod-Renov"])
                                                     comision_I = String(aserta["Incentivo Prod-Renov"])
                                                 }
-                                                encontrar++;
                                                 //Prima Neta
                                                 if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
-                                                    var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
-                                                    errores =  errores + "- Prima Neta\n"
-                                                    diferencias = String (diferencia) + "\n"
+                                                   //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
+                                                                    errores =  errores + "- Prima Neta\n"
+                                                                    //diferencias = String (diferencia) + "\n"
                                                 }
                                                 //TC = MXN
                                                 if (TC ==1){
@@ -345,9 +360,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                     diferencias = diferencias + String(diferenciaCB) + "\n"
                                                     errores = errores + "- Comisión \n"
                                                 }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                    var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferencias = diferencias + String(diferenciaCB) + "\n"
+                                                }
                                                 if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                    var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                    //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                     errores = errores + "- % Comisión \n"
                                                 }
                                                 //Comisión de Derechos
@@ -356,9 +375,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                     diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                     errores = errores + "- Comisión Gtos. Exp.\n"
                                                 }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                    var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferencias = diferencias +  String(diferenciaCG) + "\n"
+                                                }
                                                 if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                    var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                    //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                     errores = errores + "- % Comisión Maquila\n"
                                                 }
                                                  //Comisión Especial
@@ -367,9 +390,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                     diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                     errores = errores + "- Incentivo Prod-Renov\n"
                                                 }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                    var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferencias = diferencias +  String(diferenciaIP) + "\n"
+                                                }
                                                 if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                    var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                    diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                    //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                    //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                     errores = errores + "- %Incentivo Prod-Renov\n"
                                                 }
                                                 }
@@ -385,8 +412,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                         }
                                                     }
                                                     if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                        var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                        //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                         errores = errores + "- % Comisión \n"
                                                     }
                                                     //Comisión de Derechos
@@ -399,8 +426,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                         }
                                                     }
                                                     if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                        var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                        //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                         errores = errores + "- % Comisión Maquila\n"
                                                     }
                                                      //Comisión Especial
@@ -413,24 +440,24 @@ document.getElementById('button').addEventListener("click", () => {
                                                         }
                                                     }
                                                     if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                        var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                        //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                         errores = errores + "- %Incentivo Prod-Renov\n"
                                                     }                                              
                                                     
                                                 }
                                                 
-                                                if(errores != ""){
-                                                   var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>"+ArreySICAS[i]['Serie']+"\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                   var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                   tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"
-                                                }
-                                                
+                                                    var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                    tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                             }
                                           }
-                                          if(encontrar==0){
-                                            //--tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"</td><td>"+aserta["Prima Neta"]+"</td><td>"+aserta["% de Comisión"]+"</td><td>"+comision+"</td><td>"+aserta["Comisión"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                                            }
+                                          if (encontrar==0){
+                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                            var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
+                                            tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                          }
+                                          
                                             encontrar=0;
                                         }
     
@@ -442,7 +469,7 @@ document.getElementById('button').addEventListener("click", () => {
                                                 resultObject = search(poliza, objetoSICAS)
                                             }
                                           
-                                         document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                         document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                         }
                                         ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                         if(resultObject==0){
@@ -520,7 +547,7 @@ document.getElementById('button').addEventListener("click", () => {
                                           objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                         
                                             //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                                          let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' style='text-align:center;'><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia</th><th>Incidencia</th></tr>";
+                                          
                                           let resultObject;
                                           let aserta;
                                           var encontrar;           
@@ -548,7 +575,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                   
                                                   //Obtener importe mxn
                                                   importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                                                  if (polizaSicas == key ) {
+                                                  if (polizaSicas == key ) { 
+                                                    encontrar++;
                                                     if(comision == 'Comisión Base o de Neta'){
                                                         porcentaje = String(aserta["% de Comisión"])
                                                         comision_I = String(aserta["Comisión"])
@@ -561,12 +589,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                         porcentaje = String(aserta["%Incentivo Prod-Renov"])
                                                         comision_I = String(aserta["Incentivo Prod-Renov"])
                                                     }
-                                                    encontrar++;
                                                     //Prima Neta
                                                     if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
-                                                        var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
-                                                        errores =  errores + "- Prima Neta\n"
-                                                        diferencias = String (diferencia) + "\n"
+                                                       //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
+                                                                        errores =  errores + "- Prima Neta\n"
+                                                                        //diferencias = String (diferencia) + "\n"
                                                     }
                                                     //TC = MXN
                                                     if (TC ==1){
@@ -576,9 +603,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                         diferencias = diferencias + String(diferenciaCB) + "\n"
                                                         errores = errores + "- Comisión \n"
                                                     }
+                                                    else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                        var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                        diferencias = diferencias + String(diferenciaCB) + "\n"
+                                                    }
                                                     if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                        var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                        //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                         errores = errores + "- % Comisión \n"
                                                     }
                                                     //Comisión de Derechos
@@ -587,9 +618,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                         diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                         errores = errores + "- Comisión Gtos. Exp.\n"
                                                     }
+                                                    else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                        var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                        diferencias = diferencias +  String(diferenciaCG) + "\n"
+                                                    }
                                                     if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                        var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                        //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                         errores = errores + "- % Comisión Maquila\n"
                                                     }
                                                      //Comisión Especial
@@ -598,9 +633,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                         diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                         errores = errores + "- Incentivo Prod-Renov\n"
                                                     }
+                                                    else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                        var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                        diferencias = diferencias +  String(diferenciaIP) + "\n"
+                                                    }
                                                     if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                        var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                        diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                        //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                        //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                         errores = errores + "- %Incentivo Prod-Renov\n"
                                                     }
                                                     }
@@ -616,8 +655,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                             }
                                                         }
                                                         if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                            var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                            //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                             errores = errores + "- % Comisión \n"
                                                         }
                                                         //Comisión de Derechos
@@ -630,8 +669,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                             }
                                                         }
                                                         if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                            var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                            //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                             errores = errores + "- % Comisión Maquila\n"
                                                         }
                                                          //Comisión Especial
@@ -644,24 +683,24 @@ document.getElementById('button').addEventListener("click", () => {
                                                             }
                                                         }
                                                         if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                            var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                            //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                             errores = errores + "- %Incentivo Prod-Renov\n"
                                                         }                                              
                                                         
                                                     }
                                                     
-                                                    if(errores != ""){
-                                                       var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>"+ArreySICAS[i]['Serie']+"\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                       var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                       tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"
-                                                    }
-                                                    
+                                                        var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
                                                 }
                                               }
-                                              if(encontrar==0){
-                                                //--tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"</td><td>"+aserta["Prima Neta"]+"</td><td>"+aserta["% de Comisión"]+"</td><td>"+comision+"</td><td>"+aserta["Comisión"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                                                }
+                                              if (encontrar==0){
+                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                                var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
+                                                        tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                              }
+                                              
                                                 encontrar=0;
                                             }
         
@@ -673,7 +712,7 @@ document.getElementById('button').addEventListener("click", () => {
                                                     resultObject = search(poliza, objetoSICAS)
                                                 }
                                               
-                                             document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                             document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                             }
                                             ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                             if(resultObject==0){
@@ -772,7 +811,7 @@ document.getElementById('button').addEventListener("click", () => {
                                               objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                             
                                                 //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                                            
+                                              
                                               let resultObject;
                                               let aserta;
                                               var encontrar;           
@@ -800,7 +839,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                       
                                                       //Obtener importe mxn
                                                       importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                                                      if (polizaSicas == key ) {
+                                                      if (polizaSicas == key ) { 
+                                                        encontrar++;
                                                         if(comision == 'Comisión Base o de Neta'){
                                                             porcentaje = String(aserta["% de Comisión"])
                                                             comision_I = String(aserta["Comisión"])
@@ -813,12 +853,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                             porcentaje = String(aserta["%Incentivo Prod-Renov"])
                                                             comision_I = String(aserta["Incentivo Prod-Renov"])
                                                         }
-                                                        encontrar++;
                                                         //Prima Neta
                                                         if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
-                                                            var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
-                                                            errores =  errores + "- Prima Neta\n"
-                                                            diferencias = String (diferencia) + "\n"
+                                                           //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
+                                                                            errores =  errores + "- Prima Neta\n"
+                                                                            //diferencias = String (diferencia) + "\n"
                                                         }
                                                         //TC = MXN
                                                         if (TC ==1){
@@ -828,9 +867,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                             diferencias = diferencias + String(diferenciaCB) + "\n"
                                                             errores = errores + "- Comisión \n"
                                                         }
+                                                        else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                            var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                            diferencias = diferencias + String(diferenciaCB) + "\n"
+                                                        }
                                                         if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                            var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                            //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                             errores = errores + "- % Comisión \n"
                                                         }
                                                         //Comisión de Derechos
@@ -839,9 +882,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                             diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                             errores = errores + "- Comisión Gtos. Exp.\n"
                                                         }
+                                                        else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                            var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                            diferencias = diferencias +  String(diferenciaCG) + "\n"
+                                                        }
                                                         if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                            var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                            //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                             errores = errores + "- % Comisión Maquila\n"
                                                         }
                                                          //Comisión Especial
@@ -850,9 +897,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                             diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                             errores = errores + "- Incentivo Prod-Renov\n"
                                                         }
+                                                        else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                            var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                            diferencias = diferencias +  String(diferenciaIP) + "\n"
+                                                        }
                                                         if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                            var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                            diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                            //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                            //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                             errores = errores + "- %Incentivo Prod-Renov\n"
                                                         }
                                                         }
@@ -868,8 +919,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 }
                                                             }
                                                             if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                                var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                                //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                                 errores = errores + "- % Comisión \n"
                                                             }
                                                             //Comisión de Derechos
@@ -882,8 +933,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 }
                                                             }
                                                             if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                                var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                                //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                                 errores = errores + "- % Comisión Maquila\n"
                                                             }
                                                              //Comisión Especial
@@ -896,24 +947,24 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 }
                                                             }
                                                             if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                                var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                                //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                                 errores = errores + "- %Incentivo Prod-Renov\n"
                                                             }                                              
                                                             
                                                         }
                                                         
-                                                        if(errores != ""){
-                                                           var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>"+ArreySICAS[i]['Serie']+"\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                           var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                           tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"
-                                                        }
-                                                        
+                                                            var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                            tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                                     }
                                                   }
-                                                  if(encontrar==0){
-                                                    //--tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"</td><td>"+aserta["Prima Neta"]+"</td><td>"+aserta["% de Comisión"]+"</td><td>"+comision+"</td><td>"+aserta["Comisión"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                                                    }
+                                                  if (encontrar==0){
+                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                                    var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
+                                                    tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                                  }
+                                                  
                                                     encontrar=0;
                                                 }
             
@@ -925,7 +976,7 @@ document.getElementById('button').addEventListener("click", () => {
                                                         resultObject = search(poliza, objetoSICAS)
                                                     }
                                                   
-                                                 document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                                 document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                                 }
                                                 ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                                 if(resultObject==0){
@@ -1073,7 +1124,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                           
                                                           //Obtener importe mxn
                                                           importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                                                          if (polizaSicas == key ) {
+                                                          if (polizaSicas == key ) { 
+                                                            encontrar++;
                                                             if(comision == 'Comisión Base o de Neta'){
                                                                 porcentaje = String(aserta["% de Comisión"])
                                                                 comision_I = String(aserta["Comisión"])
@@ -1086,12 +1138,11 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 porcentaje = String(aserta["%Incentivo Prod-Renov"])
                                                                 comision_I = String(aserta["Incentivo Prod-Renov"])
                                                             }
-                                                            encontrar++;
                                                             //Prima Neta
                                                             if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
-                                                                var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
-                                                                errores =  errores + "- Prima Neta\n"
-                                                                diferencias = String (diferencia) + "\n"
+                                                               //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
+                                                                                errores =  errores + "- Prima Neta\n"
+                                                                                //diferencias = String (diferencia) + "\n"
                                                             }
                                                             //TC = MXN
                                                             if (TC ==1){
@@ -1101,9 +1152,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 diferencias = diferencias + String(diferenciaCB) + "\n"
                                                                 errores = errores + "- Comisión \n"
                                                             }
+                                                            else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                                var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                                diferencias = diferencias + String(diferenciaCB) + "\n"
+                                                            }
                                                             if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                                var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                                //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                                 errores = errores + "- % Comisión \n"
                                                             }
                                                             //Comisión de Derechos
@@ -1112,9 +1167,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                                 errores = errores + "- Comisión Gtos. Exp.\n"
                                                             }
+                                                            else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                                var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                                diferencias = diferencias +  String(diferenciaCG) + "\n"
+                                                            }
                                                             if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                                var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                                //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                                 errores = errores + "- % Comisión Maquila\n"
                                                             }
                                                              //Comisión Especial
@@ -1123,9 +1182,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                                 errores = errores + "- Incentivo Prod-Renov\n"
                                                             }
+                                                            else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                                var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                                diferencias = diferencias +  String(diferenciaIP) + "\n"
+                                                            }
                                                             if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                                var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                                //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                                 errores = errores + "- %Incentivo Prod-Renov\n"
                                                             }
                                                             }
@@ -1141,8 +1204,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                                     }
                                                                 }
                                                                 if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
-                                                                    var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                    diferencias = diferencias + String(diferenciaPC) + "\n"
+                                                                    //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                    //diferencias = diferencias + String(diferenciaPC) + "\n"
                                                                     errores = errores + "- % Comisión \n"
                                                                 }
                                                                 //Comisión de Derechos
@@ -1155,8 +1218,8 @@ document.getElementById('button').addEventListener("click", () => {
                                                                     }
                                                                 }
                                                                 if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
-                                                                    var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                    diferencias = diferencias +  String(diferenciaPM) + "\n"
+                                                                    //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                    //diferencias = diferencias +  String(diferenciaPM) + "\n"
                                                                     errores = errores + "- % Comisión Maquila\n"
                                                                 }
                                                                  //Comisión Especial
@@ -1169,24 +1232,24 @@ document.getElementById('button').addEventListener("click", () => {
                                                                     }
                                                                 }
                                                                 if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
-                                                                    var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
-                                                                    diferencias = diferencias +  String(diferenciaPI) + "\n"
+                                                                    //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
+                                                                    //diferencias = diferencias +  String(diferenciaPI) + "\n"
                                                                     errores = errores + "- %Incentivo Prod-Renov\n"
                                                                 }                                              
                                                                 
                                                             }
                                                             
-                                                            if(errores != ""){
-                                                               var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>"+ArreySICAS[i]['Serie']+"\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                               var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                               tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"
-                                                            }
-                                                            
+                                                                var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                                         }
                                                       }
-                                                      if(encontrar==0){
-                                                        //--tabla= tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+key+"</td><td>"+aserta["Prima Neta"]+"</td><td>"+aserta["% de Comisión"]+"</td><td>"+comision+"</td><td>"+aserta["Comisión"]+"</td><td></td><td style='background-color:var(--bs-rojo2)'>NO SE ENCONTRÓ</td></tr>";
-                                                        }
+                                                      if (encontrar==0){
+                                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                                        var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
+                                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                                      }
+                                                      
                                                         encontrar=0;
                                                     }
                 
@@ -1198,7 +1261,7 @@ document.getElementById('button').addEventListener("click", () => {
                                                             resultObject = search(poliza, objetoSICAS)
                                                         }
                                                       
-                                                     document.getElementById("jsondata1").innerHTML = tabla+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                                                     document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                                                     }
                                                     ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                                     if(resultObject==0){
