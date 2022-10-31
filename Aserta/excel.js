@@ -229,9 +229,9 @@ document.getElementById('button').addEventListener("click", () => {
                                         }
                                       }
                                       if (encontrar==0){
-                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Folio Factura']+"<td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                        var tabla_sicas ="<td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td>"
-                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>NA"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
+                                        var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
+                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
                                       }
                                       
                                         encontrar=0;
