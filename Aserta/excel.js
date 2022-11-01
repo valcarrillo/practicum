@@ -243,7 +243,7 @@ document.getElementById('button').addEventListener("click", () => {
 
 
                                     for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                        var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                        var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                         aserta=objetoAserta[j];
                                         if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                             reng_EC = reng_EC + 1;
@@ -470,7 +470,7 @@ document.getElementById('button').addEventListener("click", () => {
     
     
                                         for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                            var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                            var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                             aserta=objetoAserta[j];
                                             if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                 reng_EC = reng_EC + 1;
@@ -718,7 +718,7 @@ document.getElementById('button').addEventListener("click", () => {
         
         
                                             for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                 aserta=objetoAserta[j];
                                                 if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                     reng_EC = reng_EC + 1;
@@ -987,7 +987,7 @@ document.getElementById('button').addEventListener("click", () => {
             
             
                                                 for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                    var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                    var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                     aserta=objetoAserta[j];
                                                     if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                         reng_EC = reng_EC + 1;
@@ -1277,7 +1277,7 @@ document.getElementById('button').addEventListener("click", () => {
                 
                 
                                                     for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                        var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                        var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                         aserta=objetoAserta[j];
                                                         if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                             reng_EC = reng_EC + 1;
