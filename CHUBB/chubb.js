@@ -1,18 +1,23 @@
 //https://levelup.gitconnected.com/how-to-convert-excel-file-into-json-object-by-using-javascript-9e95532d47c5
 //convertir en EXCEL https://codepedia.info/javascript-export-html-table-data-to-excel
-let selectedFile;
+let selectedFile=[];
 let selectedFile2;
+let numarchivos=0;
 console.log(window.XLSX);
-document.getElementById('inputA').addEventListener("change", (event) => { //Lee estado de cuenta
-    selectedFile = event.target.files[0];
+var docchubb= document.getElementById('inputA').addEventListener("change", (event) => { //Lee estado de cuenta
+    const files = event.target.files;
+    for (numarchivos=0; numarchivos < files.length; numarchivos++) {
+        selectedFile[numarchivos] = event.target.files[numarchivos];
+     }
 })
+
 document.getElementById('inputSicas').addEventListener("change", (event) => {// Lee SICAS
     selectedFile2 = event.target.files[0];
 }
 )
 
 let objetoSICAS; //Array de objetos en el que se va a guarar SICAS
-let objetoCHUBB; //Array de objetos en el que se va a guardar CHUBB
+let objetoCHUBB=[]; //Array de objetos en el que se va a guardar CHUBB
 var fechamax = new Date("2000-01-02"); // (YYYY-MM-DD)
 var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
 const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
@@ -20,18 +25,25 @@ const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","
 document.getElementById('button').addEventListener("click", () => {
     var num;
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
-        let fileReader = new FileReader();
-        fileReader.readAsBinaryString(selectedFile);
+        for(i=0; i<numarchivos; i++){
+            let fileReader = new FileReader();
+        fileReader.readAsBinaryString(selectedFile[i]);
         fileReader.onload = (event)=>{
          let data1 = event.target.result;
-         let workbook1 = XLSX.read(data1,{type:"binary"});
-         console.log(workbook1);        
+         let workbook1 = XLSX.read(data1,{type:"binary"});       
          workbook1.SheetNames.forEach(sheet => {
-            //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
-                objetoCHUBB = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet]); //Nombre del array
-             console.log(objetoCHUBB);
+                                                           // EL RANGO ES LO GRANDE DEL ENCABEZADO                                         
+                objeto = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet]); //Nombre del array
+                //objetoCHUBB=Object.assign(objetoCHUBB,objeto);
+                //objeto={};
+                for(var j=0; j<objeto.length; j++){
+                    objetoCHUBB.push(objeto[j]);
+                }
          });
-
+        }
+        }
+        console.log("objetoCHUBB:");
+         console.log(objetoCHUBB);
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
             let fileReader = new FileReader();
             fileReader.readAsBinaryString(selectedFile2);
@@ -85,9 +97,9 @@ document.getElementById('button').addEventListener("click", () => {
                                         tipodif="Total Comisión";
                                     }
                                 if(CHUBB.Importe!= importeSicas){
-                                    tabladiferencias=tabladiferencias+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                                    tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                                 }else{
-                                    tablaiguales=tablaiguales+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
+                                    tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
                                 }
                               return ArraySICAS;
                             }
@@ -97,7 +109,6 @@ document.getElementById('button').addEventListener("click", () => {
                           }
                     }
                       if(encontrar==0){ // Encontrar es una bandera. Si no se encuentra, se incluye lo de abajo
-                        CHUBB.Endoso=0;
                         noencontrados.push(CHUBB);
                       //tablanoencontrados= tablanoencontrados+"<tr><td style='background-color:#8495cb'>"+poliza+"</td><td>"+endoso+"</td><td>"+pnetamto+"</td><td>"+porcentaje+"</td><td>Comisión Base</td><td>"+comisionmto+"</td><td></td><td>NO SE ENCONTRÓ</td></tr>";
                         return CHUBB;
@@ -134,9 +145,9 @@ document.getElementById('button').addEventListener("click", () => {
                                     tipodif="Total Comisión";
                                 }
                             if(CHUBB.Importe != importeSicas){
-                                tabladiferencias=tabladiferencias+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                                tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                             }else{
-                                tablaiguales=tablaiguales+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
+                                tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
                             }
                           return ArraySICAS;
             
@@ -204,6 +215,12 @@ document.getElementById('button').addEventListener("click", () => {
                             clave=objetoCHUBB[j].ClaveId;
                             if(clave != null){
                                 clave = clave.replace(/\s/g, '');
+                            }else{
+                                clave='';
+                                objetoCHUBB[j].ClaveId=clave;
+                            }
+                            if(!(objetoCHUBB[j].hasOwnProperty('Asegurado'))){
+                                objetoCHUBB[j].Asegurado=' ';
                             }
                             poliza=objetoCHUBB[j].PolizaId;
                             poliza = poliza.replace(/\s/g, '');
@@ -222,7 +239,11 @@ document.getElementById('button').addEventListener("click", () => {
                                 }else{
                                     porcentajecomision="";
                                 }
-                                serie=objetoCHUBB[j-1].Recibo.toString().padStart(3, "0")+"/"+objetoCHUBB[j-1].TotalRecibo.toString().padStart(3, "0");
+                                if(objetoCHUBB[j-1].hasOwnProperty('Recibo') && objetoCHUBB[j-1].hasOwnProperty('TotalRecibo')){ 
+                                    serie=objetoCHUBB[j-1].Recibo.toString().padStart(3, "0")+"/"+objetoCHUBB[j-1].TotalRecibo.toString().padStart(3, "0");
+                                }else{
+                                   serie="000/000";
+                                }
                                 if(objetoCHUBB[j-1].TipoMov==6){
                                     tipocomision="Comisión por derechos";
                                     jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "Importe": Math.round(comisionmto*100)/100, "% Comision": porcentajecomision, "Tipo Comisión": tipocomision};
@@ -275,6 +296,7 @@ document.getElementById('button').addEventListener("click", () => {
                         document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(registers)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
                         //ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                        objetoCHUBB=[];
                         if(resultObject==0){
                             document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
@@ -287,7 +309,6 @@ document.getElementById('button').addEventListener("click", () => {
              document.getElementById("jsondata").innerHTML = "No se adjuntó nada en SICAS";
         }
        
-        }
     }else{
         document.getElementById("jsondata").innerHTML = "No se adjuntó el Estado de Cuenta de CHUBB";
     }
