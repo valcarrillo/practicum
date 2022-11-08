@@ -50,10 +50,10 @@ let encabezado;
 document.getElementById('button').addEventListener("click", () => {
     var num, num2;
     var reng_SICAS=0;
-                                  var reng_EC=0;  
+    var reng_EC=0;  
     num_ECT = document.getElementById("select").value
     //ESTRUCTURA TABLA
-    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia</th><th>Incidencia</th></tr>";
+    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia</th><th>Incidencia</th></tr>";
     let tablaNA ="";
             switch (num_ECT){
                 case '0':
@@ -85,7 +85,7 @@ document.getElementById('button').addEventListener("click", () => {
                                   
                                   let resultObject;
                                   let aserta;
-                                  var encontrar;   
+                                  var encontrar = 0;   
                                         
                 
                                   //Encontrar un valor ahí adentro
@@ -104,7 +104,7 @@ document.getElementById('button').addEventListener("click", () => {
                                         //Obtener TC del Estado de Cuenta
                                         if(aserta['Moneda'] != 'MXN'){
                                             var TC_EstadoCuenta= Number(aserta["Comisión"])/ (Number(aserta["% de Comisión"])*Number(aserta["Prima Neta"]))
-                                            TC_EstadoCuenta= Math.trunc(TC_EstadoCuenta*10000)/10000
+                                            TC_EstadoCuenta= Math.trunc(TC_EstadoCuenta*1000000)/10000
                                         }
                                         else{
                                             var TC_EstadoCuenta= 1
@@ -185,11 +185,17 @@ document.getElementById('button').addEventListener("click", () => {
                                                 //Comisión Base
                                                 if(importe_mxn != aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
                                                     var diferenciaCB= Math.round((aserta["Comisión"] - importe_mxn)*100)/100;
+                                                    diferenciaCB=Math.round(diferenciaCB/Number(TC)*100)/100
                                                     diferencias = diferencias + String(diferenciaCB) + "\n"
                                                     errores = errores + "- Comisión \n"
                                                     if(ArreySICAS[i]["TC"]!=TC_EstadoCuenta){
                                                         errores = errores + "- Tipo de Cambio\n"
                                                     }
+                                                }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
+                                                    var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferenciaCB=Math.round(diferenciaCB/Number(TC)*100)/100
+                                                    diferencias = diferencias + String(diferenciaCB) + "\n"
                                                 }
                                                 if (aserta["% de Comisión"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Base o de Neta'){
                                                     //var diferenciaPC= Math.round((aserta["% de Comisión"] -ArreySICAS[i]["% Participacion"] )*100)/100;
@@ -199,11 +205,17 @@ document.getElementById('button').addEventListener("click", () => {
                                                 //Comisión de Derechos
                                                 if(importe_mxn != aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
                                                     var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - importe_mxn)*100)/100;
+                                                    diferenciaCG=Math.round(diferenciaCB/Number(TC)*100)/100
                                                     diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                     errores = errores + "- Comisión Gtos. Exp.\n"
                                                     if(ArreySICAS[i]["TC"]!=TC_EstadoCuenta){
                                                         errores = errores + "- Tipo de Cambio\n"
                                                     }
+                                                }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Comisión Gtos. Exp."] && comision == 'Comisión de Derechos'){
+                                                    var diferenciaCG= Math.round((aserta["Comisión Gtos. Exp."] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferenciaCG=Math.round(diferenciaCB/Number(TC)*100)/100
+                                                    diferencias = diferencias +  String(diferenciaCG) + "\n"
                                                 }
                                                 if (aserta["% Maquila"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión de Derechos'){
                                                     //var diferenciaPM= Math.round((aserta["% Maquila"] -ArreySICAS[i]["% Participacion"] )*100)/100;
@@ -213,11 +225,17 @@ document.getElementById('button').addEventListener("click", () => {
                                                  //Comisión Especial
                                                  if(importe_mxn != aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
                                                     var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] -importe_mxn)*100)/100;
+                                                    diferenciaIP=Math.round(diferenciaCB/Number(TC)*100)/100
                                                     diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                     errores = errores + "- Incentivo Prod-Renov\n"
                                                     if(ArreySICAS[i]["TC"]!=TC_EstadoCuenta){
                                                         errores = errores + "- Tipo de Cambio\n"
                                                     }
+                                                }
+                                                else if(ArreySICAS[i]["Importe"] == aserta["Incentivo Prod-Renov"] && comision == 'Comisión Especial'){
+                                                    var diferenciaIP= Math.round((aserta["Incentivo Prod-Renov"] - ArreySICAS[i]["Importe"])*100)/100;
+                                                    diferenciaIP=Math.round(diferenciaCB/Number(TC)*100)/100
+                                                    diferencias = diferencias +  String(diferenciaIP) + "\n"
                                                 }
                                                 if (aserta["%Incentivo Prod-Renov"] != ArreySICAS[i]["% Participacion"] && comision == 'Comisión Especial'){
                                                     //var diferenciaPI= Math.round((aserta["%Incentivo Prod-Renov"] -ArreySICAS[i]["% Participacion"] )*100)/100;
@@ -228,13 +246,14 @@ document.getElementById('button').addEventListener("click", () => {
                                             }
                                             
                                                 var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
                                                 tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                         }
                                       }
                                       if (encontrar==0){
-                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                        var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
+                                        console.log(key)
+                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                        var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
                                         tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
                                       }
                                       
@@ -243,14 +262,14 @@ document.getElementById('button').addEventListener("click", () => {
 
 
                                     for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                        var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                        var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                         aserta=objetoAserta[j];
-                                        if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
+                                        if(poliza.length> 11 && poliza.length < 16 && poliza.lastIndexOf('-') != -1){
                                             reng_EC = reng_EC + 1;
-                                            console.log(poliza);
                                             resultObject = search(poliza, objetoSICAS)
                                         }
-                                        document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"'\nRenglones SICAS: "+reng_SICAS+"\n";
+                                        console.log(reng_EC)
+                                        document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                                      document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
 
                                      
@@ -313,7 +332,7 @@ document.getElementById('button').addEventListener("click", () => {
                                       
                                       let resultObject;
                                       let aserta;
-                                      var encontrar;           
+                                      var encontrar = 0;           
                     
                                       //Encontrar un valor ahí adentro
                                       search = (key, ArreySICAS) => {
@@ -455,13 +474,13 @@ document.getElementById('button').addEventListener("click", () => {
                                                 }
                                                 
                                                     var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
                                                     tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                                             }
                                           }
                                           if (encontrar==0){
-                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                            var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
+                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                            var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
                                             tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
                                           }
                                           
@@ -470,7 +489,7 @@ document.getElementById('button').addEventListener("click", () => {
     
     
                                         for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                            var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                            var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                             aserta=objetoAserta[j];
                                             if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                 reng_EC = reng_EC + 1;
@@ -561,7 +580,7 @@ document.getElementById('button').addEventListener("click", () => {
                                           
                                           let resultObject;
                                           let aserta;
-                                          var encontrar;           
+                                          var encontrar = 0;           
                         
                                           //Encontrar un valor ahí adentro
                                           search = (key, ArreySICAS) => {
@@ -702,23 +721,23 @@ document.getElementById('button').addEventListener("click", () => {
                                                         
                                                     }
                                                     
-                                                        var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                        tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
-                                                }
-                                              }
-                                              if (encontrar==0){
-                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                                var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
-                                                tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
-                                              }
+                                                    var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                    tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
+                                            }
+                                          }
+                                          if (encontrar==0){
+                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                            var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
+                                            tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                          }
                                               
                                                 encontrar=0;
                                             }
         
         
                                             for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                 aserta=objetoAserta[j];
                                                 if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                     reng_EC = reng_EC + 1;
@@ -830,7 +849,7 @@ document.getElementById('button').addEventListener("click", () => {
                                               
                                               let resultObject;
                                               let aserta;
-                                              var encontrar;           
+                                              var encontrar = 0;           
                             
                                               //Encontrar un valor ahí adentro
                                               search = (key, ArreySICAS) => {
@@ -971,30 +990,30 @@ document.getElementById('button').addEventListener("click", () => {
                                                             
                                                         }
                                                         
-                                                            var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                            tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
-                                                    }
-                                                  }
-                                                  if (encontrar==0){
-                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                                    var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
-                                                    tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
-                                                  }
+                                                        var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                        tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
+                                                }
+                                              }
+                                              if (encontrar==0){
+                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                                var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
+                                                tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                              }
                                                   
                                                     encontrar=0;
                                                 }
             
             
                                                 for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                    var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                    var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                     aserta=objetoAserta[j];
                                                     if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                         reng_EC = reng_EC + 1;
                                                         console.log(poliza);
                                                         resultObject = search(poliza, objetoSICAS)
                                                     }
-                                                    document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"'\nRenglones SICAS: "+reng_SICAS+"\n";
+                                                    document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                                                  document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
             
                                                  
@@ -1120,7 +1139,7 @@ document.getElementById('button').addEventListener("click", () => {
                                                   
                                                   let resultObject;
                                                   let aserta;
-                                                  var encontrar;           
+                                                  var encontrar = 0;           
                                 
                                                   //Encontrar un valor ahí adentro
                                                   search = (key, ArreySICAS) => {
@@ -1261,30 +1280,30 @@ document.getElementById('button').addEventListener("click", () => {
                                                                 
                                                             }
                                                             
-                                                                var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
-                                                                var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
-                                                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
-                                                        }
-                                                      }
-                                                      if (encontrar==0){
-                                                        var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>NA</td><td>NO SE ENCONTRÓ</td>"
-                                                        var tabla_sicas =aserta['Fiado/Contratante']+"<td>"+aserta['No Fianza/']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td></td><td>"+aserta['Prima Neta']+"</td><td></td><td>"+aserta['Comisión']+"</td><td>"+aserta['% de Comisión']+"</td>"
-                                                        tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
-                                                      }
+                                                            var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
+                                                            var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                                            tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
+                                                    }
+                                                  }
+                                                  if (encontrar==0){
+                                                    var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"</td><td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+aserta['% de Comisión']+"</td><td>"+aserta['Comisión']+"</td><td>"+TC_EstadoCuenta+"</td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                                                    var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
+                                                    tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"  
+                                                  }
                                                       
                                                         encontrar=0;
                                                     }
                 
                 
                                                     for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                                                        var poliza =  String (objetoAserta[j]["No Fianza/"])
+                                                        var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                                                         aserta=objetoAserta[j];
                                                         if(poliza.length == 12 || poliza.length == 13 && poliza.lastIndexOf('-') != -1){
                                                             reng_EC = reng_EC + 1;
                                                             console.log(poliza);
                                                             resultObject = search(poliza, objetoSICAS)
                                                         }
-                                                        document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"'\nRenglones SICAS: "+reng_SICAS+"\n";
+                                                        document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                                                      document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                 
                                                      
