@@ -7,7 +7,7 @@ console.log(window.XLSX);
 var docchubb= document.getElementById('inputA').addEventListener("change", (event) => { //Lee estado de cuenta
     const files = event.target.files;
     for (numarchivos=0; numarchivos < files.length; numarchivos++) {
-        selectedFile[numarchivos] = event.target.files[numarchivos];
+        selectedFile[numarchivos] = event.target.files[numarchivos]; //selectedFile[0]=file[0]
      }
 })
 
@@ -22,10 +22,12 @@ var fechamax = new Date("2000-01-02"); // (YYYY-MM-DD)
 var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
 const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
 
+var reng_EC=0;  
+
 document.getElementById('button').addEventListener("click", () => {
     var num;
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
-        for(i=0; i<numarchivos; i++){
+        for(i=0; i<numarchivos; i++){ //ciclo que lee cada selected file
             let fileReader = new FileReader();
         fileReader.readAsBinaryString(selectedFile[i]);
         fileReader.onload = (event)=>{
@@ -53,11 +55,9 @@ document.getElementById('button').addEventListener("click", () => {
              workbook2.SheetNames.forEach(sheet => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                   console.log(objetoSICAS);
+                  var reng_SICAS=objetoSICAS.length;
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                    //"<tr><th>SICAS</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>CHUBB</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>"
-                    //"<tr><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>Tipo Cambio</td><td>PrimaNeta</td><td>Tipo Comision</td><td>Importe</td><td>% Participacion</td><td></td><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>% Comisión</td><td>Comisión</td><td>Tipo Cambio</td><td>Diferencia</td><td>Incidencia</td></tr>"
-                    //"<tr><td>"+ArraySICAS[i]["Nombre Asegurado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+ArraySICAS[i].Serie+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+CHUBB.Serie+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.ComisionMto+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>"
-                  let tabladiferencias ="<table id='CHUBBFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' hidden><tr><th>SICAS</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>CHUBB</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
+                  let tabladiferencias ="<table id='CHUBBFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' ><tr><th>SICAS</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>CHUBB</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
                   tabladiferencias=tabladiferencias+"<tr><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>Tipo Cambio</td><td>PrimaNeta</td><td>Tipo Comision</td><td>Importe</td><td>% Participacion</td><td></td><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>% Comisión</td><td>Comisión</td><td>Tipo Cambio</td><td>Diferencia</td><td>Incidencia</td></tr>";
                   let resultObject;
                   let CHUBB;
@@ -94,16 +94,11 @@ document.getElementById('button').addEventListener("click", () => {
                                     }else{
                                         tipodif="Total Comisión";
                                     }
-                                    //Estas líneas sirven para agregar un espacio después del / porque sino excel lo convierte automáticamente en fecha.
-                                    series=ArraySICAS[i].Serie.toString().split('/'); 
-                                    seriesicas=series[0]+"/ "+series[1];
-                                    seriec=CHUBB.Serie.toString().split('/');
-                                    seriechubb=seriec[0]+"/ "+seriec[1];
 
                                 if(CHUBB.Importe!= importeSicas){
-                                    tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+seriesicas+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+seriechubb+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                                    tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                                 }else{
-                                    tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+seriesicas+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+seriechubb+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
+                                    tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
                                 }
                               return ArraySICAS;
                             }
@@ -146,15 +141,11 @@ document.getElementById('button').addEventListener("click", () => {
                                 }else{
                                     tipodif="Total Comisión";
                                 }
-                                //Estas líneas sirven para agregar un espacio después del / porque sino excel lo convierte automáticamente en fecha.
-                                series=ArraySICAS[i].Serie.toString().split('/'); 
-                                seriesicas=series[0]+"/ "+series[1];
-                                seriec=CHUBB.Serie.toString().split('/');
-                                seriechubb=seriec[0]+"/ "+seriec[1];
+                             
                             if(CHUBB.Importe != importeSicas){
-                                tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+seriesicas+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+seriechubb+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
+                                tabladiferencias=tabladiferencias+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                             }else{
-                                tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>"+seriesicas+"</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+ seriechubb+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
+                                tablaiguales=tablaiguales+"<tr><td>"+CHUBB.Asegurado+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+ CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td>"+diferencia+"</td><td></td></tr>";
                             }
                           return ArraySICAS;
             
@@ -163,9 +154,7 @@ document.getElementById('button').addEventListener("click", () => {
                           }
                     }
                       if(encontrar==0){ // Encontrar es una bandera. Si no se encuentra, se incluye lo de abajo
-                        seriec=CHUBB.Serie.toString().split('/');
-                        seriechubb=seriec[0]+"/ "+seriec[1];
-                        tablanoencontrados= tablanoencontrados+"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+CHUBB["Tipo Comisión"] +"</td><td></td><td></td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>"+ seriechubb+"</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td></td><td>NO SE ENCONTRÓ</td></tr>";
+                        tablanoencontrados= tablanoencontrados+"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+CHUBB["Tipo Comisión"] +"</td><td></td><td></td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+ CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td></td><td>NO SE ENCONTRÓ</td></tr>";
                         return CHUBB;
                         }
                       encontrar=0; 
@@ -291,6 +280,7 @@ document.getElementById('button').addEventListener("click", () => {
                             }
                         }
                         console.log(objetoNuevochubb);
+                        var reng_EC=objetoNuevochubb.length;  
                      for(var j=1; j<objetoNuevochubb.length; j++){
                             poliza=objetoNuevochubb[j].ClaveId+" "+objetoNuevochubb[j].PolizaId;
                             //console.log(objetoNuevochubb[j]);
@@ -302,10 +292,10 @@ document.getElementById('button').addEventListener("click", () => {
                         //console.log(noencontrados[j]);
                         search2(poliza, noencontrados[j], Sicassinendoso);
                     }
-                       
+                    document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                         document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(registers)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
-                        ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                        //ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         objetoCHUBB=[];
                         if(resultObject==0){
                             document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
