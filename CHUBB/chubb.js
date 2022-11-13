@@ -25,7 +25,9 @@ const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","
 var reng_EC=0;  
 
 document.getElementById('button').addEventListener("click", () => {
-    var num;
+    jsonObj={"Asegurado": "NO SIRVE SOLO PARA PRUEBA", "ClaveId": "AAA", "PolizaId": "00000000","Endoso": "00000", "Recibo": "0", "TotalRecibo": "0","PNetaMto": "000", "ComisionMto": "00000", "ComisionSobreRecargoMto": "000", "TipoMov": "0"};
+    objetoCHUBB.push(jsonObj);
+    jsonObj={};
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
         for(i=0; i<numarchivos; i++){ //ciclo que lee cada selected file
             let fileReader = new FileReader();
@@ -36,9 +38,7 @@ document.getElementById('button').addEventListener("click", () => {
          workbook1.SheetNames.forEach(sheet => {
                                                            // EL RANGO ES LO GRANDE DEL ENCABEZADO                                         
                 objeto = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet]); //Nombre del array
-                //objetoCHUBB=Object.assign(objetoCHUBB,objeto);
-                //objeto={};
-                for(var j=0; j<objeto.length; j++){
+                for(var j=1; j<objeto.length; j++){
                     objetoCHUBB.push(objeto[j]);
                 }
          });
@@ -60,12 +60,10 @@ document.getElementById('button').addEventListener("click", () => {
                   let tabladiferencias ="<table id='CHUBBFianzas' width='80%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' ><tr><th>SICAS</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>CHUBB</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>";
                   tabladiferencias=tabladiferencias+"<tr><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>Tipo Cambio</td><td>PrimaNeta</td><td>Tipo Comision</td><td>Importe</td><td>% Participacion</td><td></td><td>Nombre Asegurado o Fiado</td><td>Poliza</td><td>Endoso</td><td>Moneda</td><td>Serie Recibo</td><td>% Comisión</td><td>Comisión</td><td>Tipo Cambio</td><td>Diferencia</td><td>Incidencia</td></tr>";
                   let resultObject;
-                  let CHUBB;
                   let noencontrados=[];
                   var encontrar;
                   let tablanoencontrados="";    //Hay dos tablas, la de error y no encontrados. Se unen al final para tener más orden.
                   let tablaiguales=""; //Aquí se almacenan los que no tienen diferencias. Solo es por estilo.
-                  var err="NO SE ENCONTRÓ LA PÓLIZA";
 
                   //Encontrar un valor ahí adentro
                   search = (poliza, CHUBB, ArraySICAS) => {
@@ -170,6 +168,9 @@ document.getElementById('button').addEventListener("click", () => {
                     let Sicassinendoso=[];
                     let Sicasconendoso=[];
                     //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################
+                    console.log(objetoCHUBB[0]);
+                    console.log(objetoCHUBB[0].PolizaId);
+
                     if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoCHUBB[0].hasOwnProperty('PolizaId'))){
                         document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                     }else{
@@ -192,7 +193,7 @@ document.getElementById('button').addEventListener("click", () => {
                         objetoCHUBB.push(jsonObj);
                         jsonObj={};
                         console.log(objetoCHUBB);
-                        for(var j=0; j<objetoCHUBB.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en CHUBB
+                        for(var j=1; j<objetoCHUBB.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en CHUBB
                             
                             if(objetoCHUBB[j].hasOwnProperty('PolizaId')){
                                 //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx. 
@@ -248,13 +249,13 @@ document.getElementById('button').addEventListener("click", () => {
                                     objetoNuevochubb.push(jsonObj);
                                     jsonObj={};
                                 }else{
-                                    if(comisionrecargo!=0){
+                                    if(comisionrecargo!=0 || comisionrecargo!='NaN'){
                                         tipocomision="Comisión de Recargos";
                                         jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "Importe": Math.round(comisionrecargo*100)/100, "% Comision": porcentajecomision, "Tipo Comisión": tipocomision};
                                         objetoNuevochubb.push(jsonObj);
                                         jsonObj={};
                                     }
-                                    if(comisionespecial!=0){
+                                    if(comisionespecial!=0 || !(isNaN(comisionespecial))){
                                         tipocomision="Comisión Especial";
                                         jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "Importe": Math.round(comisionespecial*100)/100, "% Comision": porcentajecomision, "Tipo Comisión": tipocomision};
                                         objetoNuevochubb.push(jsonObj);
