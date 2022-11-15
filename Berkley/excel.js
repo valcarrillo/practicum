@@ -43,7 +43,6 @@ document.getElementById('button').addEventListener("click", () => {
     }
     console.log("objetoBerkley:");
     console.log(objetoBerkley);
-    reng_EC=objetoBerkley.length;
 
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
             let fileReader = new FileReader();
@@ -71,7 +70,7 @@ document.getElementById('button').addEventListener("click", () => {
                       for (let i=0; i < ArraySICAS.length; i++) {
                         encontrar=0;
                         //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
-                        var pol = ArraySICAS[i].Poliza.split('-'),
+                        var pol = ArraySICAS[i].Poliza.toString().split('-'),
                         SICASpoliza = pol[2];
                         SICASinclusion= pol[3];
                         if(typeof  SICASinclusion === 'undefined'){
@@ -131,38 +130,46 @@ document.getElementById('button').addEventListener("click", () => {
                     
 
                     //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################
-                    if(typeof objetoSICAS[0].Poliza === 'undefined' || objetoBerkley[0].FIANZA==='undefined'){
-                        document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
-                    }else{
-                        for(var j=0; j<objetoBerkley.length-1; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                            //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.
-                            
-                                var fechas =objetoBerkley[j]["FECHA APLICACION"]; 
-                                const [dia, mes, anio] = fechas.split('/');
-                                const fecha1 = new Date(+anio, +mes - 1, +dia);
-                                if(fecha1>fechamax){
-                                    fechamax=fecha1;
-                                }
-                                if(fecha1<fechamin){
-                                    fechamin=fecha1;
-                                }
-                            
-                            berkley=objetoBerkley[j];
-                            poliza=objetoBerkley[j].FIANZA
-                            inclusion=objetoBerkley[j].INCLUSION
-                            movimiento=objetoBerkley[j].MOVIMIENTO
-                            //Manda a llamar a la función de búsqueda
-                        resultObject = search(poliza, inclusion, movimiento, objetoSICAS);
-                        console.log("Número de registros en berkley: "+j);
-                        document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
-                        document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+j+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
-                    }
-                        ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
-                        if(resultObject==0){
-                            document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
-
+                   
+                        try {
+                             if(typeof objetoSICAS[0].Poliza === 'undefined' || objetoBerkley[0].FIANZA==='undefined'){
+                                document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
+                              }else{
+                            reng_EC=objetoBerkley.length;
+                            for(var j=0; j<objetoBerkley.length-1; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
+                                //Busca la fecha más antigua y la más reciente en SICAS para el nombre del xlsx.
+                                
+                                    var fechas =objetoBerkley[j]["FECHA APLICACION"]; 
+                                    const [dia, mes, anio] = fechas.toString().split('/');
+                                    const fecha1 = new Date(+anio, +mes - 1, +dia);
+                                    if(fecha1>fechamax){
+                                        fechamax=fecha1;
+                                    }
+                                    if(fecha1<fechamin){
+                                        fechamin=fecha1;
+                                    }
+                                
+                                berkley=objetoBerkley[j];
+                                poliza=objetoBerkley[j].FIANZA
+                                inclusion=objetoBerkley[j].INCLUSION
+                                movimiento=objetoBerkley[j].MOVIMIENTO
+                                //Manda a llamar a la función de búsqueda
+                            resultObject = search(poliza, inclusion, movimiento, objetoSICAS);
+                            console.log("Número de registros en berkley: "+j);
+                            document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
+                            document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+j+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                         }
-                    }
+                            ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
+                            if(resultObject==0){
+                                document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
+
+                            }
+                    }                          
+                } catch (error) {
+                            document.getElementById("jsondata").innerHTML = "Algo salió mal al leer el documento. Revise que el encabezado tenga el formato correcto. Error: "+error;
+                            // expected output: ReferenceError: nonExistentFunction is not defined
+                            // Note - error messages will vary depending on browser
+                          }
             }
             );
              

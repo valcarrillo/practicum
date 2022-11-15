@@ -170,7 +170,8 @@ document.getElementById('button').addEventListener("click", () => {
                     //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################
                     console.log(objetoCHUBB[0]);
                     console.log(objetoCHUBB[0].PolizaId);
-
+                
+                try {
                     if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoCHUBB[0].hasOwnProperty('PolizaId'))){
                         document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                     }else{
@@ -302,6 +303,11 @@ document.getElementById('button').addEventListener("click", () => {
                             document.getElementById("jsondata").innerHTML = "No se encontró ninguna fianza";
 
                         }
+                    } catch (error) {
+                        document.getElementById("jsondata").innerHTML = "Algo salió mal al leer el documento. Revise que el encabezado tenga el formato correcto. Error: "+error;
+                        // expected output: ReferenceError: nonExistentFunction is not defined
+                        // Note - error messages will vary depending on browser
+                      }
                     }
             );
              
