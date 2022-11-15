@@ -4,7 +4,7 @@ let selectedFile=[];
 let selectedFile2;
 let numarchivos=0;
 console.log(window.XLSX);
-var docchubb= document.getElementById('inputA').addEventListener("change", (event) => { //Lee estado de cuenta
+document.getElementById('inputA').addEventListener("change", (event) => { //Lee estado de cuenta
     const files = event.target.files;
     for (numarchivos=0; numarchivos < files.length; numarchivos++) {
         selectedFile[numarchivos] = event.target.files[numarchivos]; //selectedFile[0]=file[0]
