@@ -64,6 +64,7 @@ document.getElementById('button').addEventListener("click", () => {
                   var encontrar;
                   let tablanoencontrados="";    //Hay dos tablas, la de error y no encontrados. Se unen al final para tener más orden.
                   let tablaiguales=""; //Aquí se almacenan los que no tienen diferencias. Solo es por estilo.
+                  let tablatipo6="" // En esta tabla se registrarán todas las comisiones por internet.
 
                   //Encontrar un valor ahí adentro
                   search = (poliza, CHUBB, ArraySICAS) => {
@@ -152,8 +153,12 @@ document.getElementById('button').addEventListener("click", () => {
                           }
                     }
                       if(encontrar==0){ // Encontrar es una bandera. Si no se encuentra, se incluye lo de abajo
+                        if( CHUBB["Tipo Comisión"]=="Bono Internet/ Comisión por derechos"){
+                            tablatipo6=tablatipo6+"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+CHUBB["Tipo Comisión"] +"</td><td></td><td></td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+ CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td></td><td>NO SE ENCONTRÓ</td></tr>";
+                        }else{
                         tablanoencontrados= tablanoencontrados+"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+CHUBB["Tipo Comisión"] +"</td><td></td><td></td><td></td><td>"+CHUBB.Asegurado+"</td><td>"+poliza+"</td><td>"+CHUBB.Endoso+"</td><td></td><td>'"+ CHUBB.Serie+"'</td><td>"+CHUBB["% Comision"]+"</td><td>"+CHUBB.Importe+"</td><td></td><td></td><td>NO SE ENCONTRÓ</td></tr>";
                         return CHUBB;
+                        }
                         }
                       encontrar=0; 
                     }
@@ -250,13 +255,13 @@ document.getElementById('button').addEventListener("click", () => {
                                     objetoNuevochubb.push(jsonObj);
                                     jsonObj={};
                                 }else{
-                                    if(comisionrecargo!=0 || comisionrecargo!='NaN'){
+                                    if(comisionrecargo>0){
                                         tipocomision="Comisión de Recargos";
                                         jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "Importe": Math.round(comisionrecargo*100)/100, "% Comision": porcentajecomision, "Tipo Comisión": tipocomision};
                                         objetoNuevochubb.push(jsonObj);
                                         jsonObj={};
                                     }
-                                    if(comisionespecial!=0 || !(isNaN(comisionespecial))){
+                                    if(comisionespecial>0){
                                         tipocomision="Comisión Especial";
                                         jsonObj={"Asegurado": objetoCHUBB[j-1].Asegurado, "ClaveId": claveanterior, "PolizaId": polizaanterior,"Endoso": endosoanterior, "Serie": serie,"PNetaMto": Math.round(pnetamto*100)/100, "Importe": Math.round(comisionespecial*100)/100, "% Comision": porcentajecomision, "Tipo Comisión": tipocomision};
                                         objetoNuevochubb.push(jsonObj);
@@ -295,7 +300,7 @@ document.getElementById('button').addEventListener("click", () => {
                         search2(poliza, noencontrados[j], Sicassinendoso);
                     }
                     document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
-                        document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(registers)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                        document.getElementById("jsondata").innerHTML = tabladiferencias+tablaiguales+tablanoencontrados+tablatipo6+"<tr><td>DEL</td><td>"+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+"</td><td>AL</td><td>"+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+"</td><td># Registros</td><td>"+(registers)+"</td><td></td><td></td></tr></table>"; // DEL "+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear();;//+month[messicas]+" Año: "+aniosicas; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
                     }
                         //ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         objetoCHUBB=[];
