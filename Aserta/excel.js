@@ -50,14 +50,10 @@ document.getElementById('button').addEventListener("click", () => {
                              let workbook2 = XLSX.read(data2,{type:"binary"});
                              workbook2.SheetNames.forEach(sheet => {
                                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
-                
                                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                                  
                                   let resultObject;
                                   let aserta;
                                   var encontrar = 0;   
-                                        
-                
                                   //Encontrar un valor ahí adentro
                                   search = (key, ArreySICAS) => {
                                     reng_SICAS = ArreySICAS.length;
