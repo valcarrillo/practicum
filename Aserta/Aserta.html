@@ -24,16 +24,15 @@
 <body>
 
 
-<body style="overflow-x: hidden; background-color: #d4d4d4;">
+<body style="overflow-x: hidden; ">
   <div id="wrapper">
     <!-- Header -->
-    <header id="header">
+    <header id="header" style="height: 25px;">
       <div class="inner">
-
-          <!-- Logo -->
               <a class="logo" href="../index.html">
-                  <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Comparador | Aserta</span>
+                  <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Conciliador | Aserta</span>
               </a>
+              <a href="javascript:window.open('manual.html','','width=600,height=400,left=50,top=50,toolbar=yes');void 0"><img src="../img/pregunta.png" style="width:20px;"></a> 
       </div>
   </header>
     <!--Demás-->
@@ -42,8 +41,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-4">
               <div class="column">
-                
-                  <h2>Aserta</h2>
+               <h2>Aserta</h2>
                   <div >
                     <h6 style="align-items: center;">Número de estados de Cuenta:</h6>
                     <select style="width: 100px;" id="select">
@@ -84,9 +82,9 @@
                     document.getElementById("urlSicas").innerHTML = url
                   }
                 </script>
-
+  
                 <div class="file-select" id="src-file1" >
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx" onchange="sacarURLA()" >
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx" onchange="sacarURLA()" multiple>
                 
               </div>
               <strong><pre class="d1" id="url1"></pre></strong>
@@ -117,7 +115,7 @@
                 </div>
                 <strong><pre class="d1" id="urlSicas"></pre></strong>
                 <br>
-                <strong><b><pre class="d1" id="jsondata" style="color: red; font-size:14.5px; overflow-x: hidden;"></pre></b></strong>
+                <strong><b><pre class="d1" id="jsondata" style="color: rgb(22, 24, 141); font-size:14.5px; overflow-x: hidden;"></pre></b></strong>
                 
               </div>
             </div>
@@ -128,8 +126,12 @@
         </div>
     </div>
     <div class="conatiner mt-5" style="max-width: 95%; ">
-      <pre class="d1" id="jsondata1" ></pre>
-      <pre class="d1" id="jsondata2" ></pre>
+      <div class="container">
+        <pre class="d1" id="jsondata1" ></pre>
+      </div>
+      <div class="container" style="overflow-x:auto ;">
+        <pre class="d1" id="jsondata2" ></pre>
+      </div>
       <!--<pre class="d1" id="jsondata2"></pre>-->
     </div> 
   </div>

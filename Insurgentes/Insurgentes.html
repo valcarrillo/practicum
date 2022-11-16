@@ -9,19 +9,30 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
         crossorigin="anonymous">
     <title>Aserta</title>
+     <!-- Favicon-->
+     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+     <!-- Font Awesome icons (free version)-->
+     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+     <!-- Simple line icons-->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+     <!-- Google fonts-->
+     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+     <!-- Core theme CSS (includes Bootstrap)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
     <link href="../style.css" rel="stylesheet" />
 </head>
 <body>
+
+
+<body style="overflow-x: hidden; ">
   <div id="wrapper">
     <!-- Header -->
-    <header id="header">
+    <header id="header" style="height: 25px;">
       <div class="inner">
-
-          <!-- Logo -->
               <a class="logo" href="../index.html">
-                  <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Comparador | Insurgentes</span>
+                  <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Conciliador | Insurgentes</span>
               </a>
+              <a href="javascript:window.open('manual.html','','width=600,height=400,left=50,top=50,toolbar=yes');void 0"><img src="../img/pregunta.png" style="width:20px;"></a> 
       </div>
   </header>
     <!--Demás-->
@@ -30,8 +41,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-4">
               <div class="column">
-                
-                  <h2>Insurgentes</h2>
+               <h2>Insurgentes</h2>
                   <div >
                     <h6 style="align-items: center;">Número de estados de Cuenta:</h6>
                     <select style="width: 100px;" id="select">
@@ -42,32 +52,92 @@
                       <option value="4"style="text-align: center;">4</option>
                       <option value="5"style="text-align: center;">5</option>
                     </select>
+                    <br>
                   </div>
+
                 <br>
-                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx"  >
-                <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx" >
-                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx">
-                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx">
-                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx">
+                <script>
+                  function sacarURLA(){
+                    let url = document.getElementById("inputA").value
+                    document.getElementById("url1").innerHTML = url
+                  }
+                  function sacarURLB(){
+                    let url = document.getElementById("inputB").value
+                    document.getElementById("url2").innerHTML = url
+                  }
+                  function sacarURLC(){
+                    let url = document.getElementById("inputC").value
+                    document.getElementById("url3").innerHTML = url
+                  }
+                  function sacarURLD(){
+                    let url = document.getElementById("inputD").value
+                    document.getElementById("url4").innerHTML = url
+                  }
+                  function sacarURLE(){
+                    let url = document.getElementById("inputE").value
+                    document.getElementById("url5").innerHTML = url
+                  }
+                  function sacarURLSICAS(){
+                    let url = document.getElementById("inputSicas").value
+                    document.getElementById("urlSicas").innerHTML = url
+                  }
+                </script>
+
+                <div class="file-select" id="src-file1" >
+                <input class="form-control" type="file" id="inputA" accept=".xls,.xlsx" onchange="sacarURLA()" >
+                
+              </div>
+              <strong><pre class="d1" id="url1"></pre></strong>
+              <div class="file-select" id="src-file1_2" >
+                <input class="form-control" type="file" id="inputB" accept=".xls,.xlsx"onchange="sacarURLB()" >
+              </div>
+              <strong><pre class="d1" id="url2"></pre></strong>
+              <div class="file-select" id="src-file3" >
+                <input class="form-control" type="file" id="inputC" accept=".xls,.xlsx" onchange="sacarURLC()">
+              </div>
+              <strong><pre class="d1" id="url3"></pre></strong>
+              <div class="file-select" id="src-file4" >
+                <input class="form-control" type="file" id="inputD" accept=".xls,.xlsx" onchange="sacarURLD()">
+              </div>
+              <strong><pre class="d1" id="url4"></pre></strong>
+              <div class="file-select" id="src-file5" >
+                <input class="form-control" type="file" id="inputE" accept=".xls,.xlsx" onchange="sacarURLE()">
+              </div>
+              <strong><pre class="d1" id="url5"></pre></strong>
               </div>
             </div>
+            
             <div class="col-md-4">
               <div class="column">
                 <h2>SICAS</h2>
-                <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx"  >
+                <div class="file-select" id="src-file2" >
+                  <input class="form-control" type="file" id="inputSicas" accept=".xls,.xlsx" onchange="sacarURLSICAS()">
+                </div>
+                <strong><pre class="d1" id="urlSicas"></pre></strong>
+                <br>
+                <strong><b><pre class="d1" id="jsondata" style="color: red; font-size:14.5px; overflow-x: hidden;"></pre></b></strong>
+                
               </div>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary" id="button">Comparar</button>
+              <br><br>
+                <button class="btn btn-primary" id="button" style=" background-color: #5076b8; height: 15px; align-items: center;display: flex;">Comparar</button>
             </div>
         </div>
     </div>
-    <div class="row">
-      <pre class="d1" id="jsondata"></pre>
+    <div class="conatiner mt-5" style="max-width: 95%; ">
+      <div class="container">
+        <pre class="d1" id="jsondata1" ></pre>
+      </div>
+      <div class="container" style="overflow-x:auto ;">
+        <pre class="d1" id="jsondata2" ></pre>
+      </div>
       <!--<pre class="d1" id="jsondata2"></pre>-->
     </div> 
   </div>
 </body>
-<script src="excel.js"></script>
+<script src="../Aserta/excel.js"></script>
+
+
 
 </html>
