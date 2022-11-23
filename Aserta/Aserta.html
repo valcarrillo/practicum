@@ -79,7 +79,7 @@
     </div> 
     </div>
 </body>
-<script src="excel.js"></script>
+<script src="Aserta.js"></script>
 <!-- SCRIPT PARA QUE LOS BOTONES SE VEAN BONITOS -->
 <!-- Traído de https://speckyboy.com/custom-file-upload-fields/ Ejemplo 8: Flat UI Input File -->
 <script>
@@ -97,10 +97,12 @@ button.addEventListener( "keydown", function( event ) {
         fileInput.focus();  
     }  
 });
+
 button.addEventListener( "click", function( event ) {
    fileInput.focus();
    return false;
 });  
+
 fileInput.addEventListener( "change", function( event ) {  
     the_return.innerHTML = this.value;  
 }); 

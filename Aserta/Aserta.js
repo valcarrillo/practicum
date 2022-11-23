@@ -64,11 +64,12 @@ document.getElementById('button').addEventListener("click", () => {
                           
   
                     //Encontrar un valor ahí adentro
-                    search = (key, ArreySICAS) => {
+                    search = (key, ArreySICAS,factura) => {
                       reng_SICAS = ArreySICAS.length;
                       //Recorremos arreglos de SICAS
                         for (let i=0; i < ArreySICAS.length; i++) {
                           var polizaSicas = String(ArreySICAS[i].Poliza)
+                          var facturaSicas = String(ArreySICAS[i].FolioRec)
                           var comision = String(ArreySICAS[i]["Tipo Comision"])
                           var errores="";
                           var diferencias ="";
@@ -87,7 +88,7 @@ document.getElementById('button').addEventListener("click", () => {
                             
                             //Obtener importe mxn
                             importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                            if (polizaSicas == key ) { 
+                            if (polizaSicas == key && facturaSicas == factura) { 
                               encontrar++;
                               if(comision == 'Comisión Base o de Neta'){
                                   porcentaje = String(aserta["% de Comisión"])
@@ -235,12 +236,12 @@ document.getElementById('button').addEventListener("click", () => {
                     }
                       for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
                           var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
+                          var factura = String (objetoAserta[j]["Folio Factura"])
                           aserta=objetoAserta[j];
                           if(poliza.length> 11 && poliza.length < 16 && poliza.lastIndexOf('-') != -1){
                               reng_EC = reng_EC + 1;
-                              resultObject = search(poliza, objetoSICAS)
+                              resultObject = search(poliza, objetoSICAS,factura)
                           }
-                          console.log(reng_EC)
                           document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                        document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
 
