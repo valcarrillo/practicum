@@ -129,10 +129,10 @@ document.getElementById('button').addEventListener("click", () => {
                     }
                     
 
-                    //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################
+                    //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################ objetoBerkley[0].FIANZA==='undefined'
                    
                         try {
-                             if(typeof objetoSICAS[0].Poliza === 'undefined' || objetoBerkley[0].FIANZA==='undefined'){
+                             if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoBerkley[0].hasOwnProperty('FIANZA'))){
                                 document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                               }else{
                             reng_EC=objetoBerkley.length;
