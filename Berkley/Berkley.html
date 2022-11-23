@@ -45,7 +45,7 @@
               </div>
               <form action="#">
                 <div class="input-file-container">  
-                  <input class="input-file" id="inputA" type="file" accept=".xls,.xlsx">
+                  <input class="input-file" id="inputA" type="file" accept=".xls,.xlsx" multiple>
                   <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
                 </div>
                 <p class="file-return"></p>
@@ -62,6 +62,7 @@
                     <label tabindex="0" for="my-file" class="input-file-trigger">Selecciona un archivo...</label>
                   </div>
                   <p class="file-return2"></p>
+                  <strong><b><pre class="d1" id="numregistros" style="color: rgb(40, 37, 223); font-size:14.5px; overflow-x: hidden;"></pre></b></strong>
                 </form>
               </div>
             <div class="col-md-2">
@@ -101,7 +102,7 @@ button.addEventListener( "click", function( event ) {
    return false;
 });  
 fileInput.addEventListener( "change", function( event ) {  
-    the_return.innerHTML = this.value;  
+    the_return.innerHTML = this.value;
 }); 
 button2.addEventListener( "keydown", function( event ) {  
     if ( event.keyCode == 13 || event.keyCode == 32 ) {  
