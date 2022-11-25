@@ -288,10 +288,10 @@ document.getElementById('button').addEventListener("click", () => {
                       }
                       if (reng_EC != 0 && reng_SICAS != 0){
                        document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
+                       document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                         ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
-                        location.reload()
+                        
                         //document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
-                        alert("Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n")
                       }
             }
             );
