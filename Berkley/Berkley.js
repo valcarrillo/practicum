@@ -26,14 +26,14 @@ var reng_EC=0; //Esta variable guardará la cantidad de renglones que se contaro
 
 document.getElementById('button').addEventListener("click", () => { //Cuando se da clic en el botón Comparar sucede los siguiente:
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
-        for(i=0; i<numarchivos; i++){ //ciclo que lee cada selected file de Estado de cuenta
+        for(i=0; i<numarchivos; i++){ //ciclo que lee cada selected file de Estado de cuenta. Si no lo encuentra marcha error
             let fileReader = new FileReader();
         fileReader.readAsBinaryString(selectedFile[i]); //convierte el archivo den un binary string
         fileReader.onload = (event)=>{
          let data1 = event.target.result;
          let workbook1 = XLSX.read(data1,{type:"binary"});  //lee los resultados binarios como excel   
          workbook1.SheetNames.forEach(sheet => {
-            //console.log(workbook1.Sheets[sheet]);                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
+                                                           // EL RANGO ES LO GRANDE DEL ENCABEZADO
             objeto = XLSX.utils.sheet_to_row_object_array(workbook1.Sheets[sheet], {range:1}); //objeto es el Nombre del array, y la función siguiente es la que lo convierte en un objeto de arrays. El primer campo es el documento, el segundo el tamaño de las filas a ignorar antes del encabezado
             console.log(objeto); //se imprime el objeto para ver que se lea bien
             for(var j=1; j<objeto.length-1; j++){// Cada objeto, es decir, cada renglón del estado de cuenta se inserta dentro de objetoBerkley. Esta función sirve para unir todos los renglones de varios Estados de cuenta en un solo objeto. Se pone -1 porque la última línea del edo de cuenta no se considera
@@ -112,7 +112,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                 if (SICASendoso == endo) { //endoso SICAS == endoso Berkley?
                                     encontrar=1; //Si los tres campos anteriores coinciden, se encontó la póliza. Entonces la bandera es 1
 
-                                //FUNCIÓNES QUE REDONDEAN LOS VALORES Y MULTIPLICAN POR EL TIPO DE CAMBIO
+                                //FUNCIONES QUE REDONDEAN LOS VALORES Y MULTIPLICAN POR EL TIPO DE CAMBIO
                                 importeSicas=Math.round(ArraySICAS[i]["Importe"]*ArraySICAS[i].TC*100)/100;// Esto es para que solo cuente los primeros dos decimales
                                 importeBerkley=Math.round(berkley["COMISIONES"]*berkley["TIPO CAMBIO"]*100)/100;
                                     //Esta operación saca la diferencia de los datos anteriores
