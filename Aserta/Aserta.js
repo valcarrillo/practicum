@@ -18,15 +18,13 @@ document.getElementById('inputSicas').addEventListener("change", (event) => {// 
 
 let objetoSICAS; //Array de objetos en el que se va a guarar SICAS
 let objetoAserta=[]; //Array de objetos en el que se va a guardar CHUBB
-var fechamax = new Date("2000-01-02"); // (YYYY-MM-DD)
-var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
-const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
 
 document.getElementById('button').addEventListener("click", () => {
     var reng_SICAS=0;
     var reng_EC=0; 
-    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia % Comisión</th><th>Diferencia Comisión</th><th>Incidencia</th></tr>";
+    var tabla = " <table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia % Comisión</th><th>Diferencia Comisión MXN</th><th>Incidencia</th></tr>";
     let tablaNA ="";
+    let formato_tabla = false;
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
         for(i=0; i<numarchivos; i++){
             let fileReader = new FileReader();
@@ -57,19 +55,13 @@ document.getElementById('button').addEventListener("click", () => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
                   console.log(objetoSICAS);
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
-                                  
-                    let resultObject;
                     let aserta;
                     var encontrar = 0;   
-                          
-  
                     //Encontrar un valor ahí adentro
                     search = (key, ArreySICAS, factura) => {
                       //Recorremos arreglos de SICAS
                         for (let i=0; i < ArreySICAS.length; i++) {
                           var polizaSicas = String(ArreySICAS[i].Poliza)
-                          var fecha = Date(ArreySICAS[i]["Fecha Pago Recibo"])
-                          console.log(fecha)
                           var facturaSicas = String(ArreySICAS[i].FolioRec)
                           var comision = String(ArreySICAS[i]["Tipo Comision"])
                           var errores="";
@@ -266,6 +258,8 @@ document.getElementById('button').addEventListener("click", () => {
                         }
                           encontrar=0;
                     }
+                    //Dar formato a la tabla 
+                    
                       for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
                           var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                           var factura =  String (objetoAserta[j]["Folio Factura"]);
@@ -288,11 +282,12 @@ document.getElementById('button').addEventListener("click", () => {
                       }
                       if (reng_EC != 0 && reng_SICAS != 0){
                        document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
-                       document.getElementById("numregistros").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
+                       document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                         ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                         
                         //document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                       }
+                      //setInterval("location.reload()",10);
             }
             );
              
