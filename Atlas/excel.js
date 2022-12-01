@@ -210,8 +210,13 @@ document.getElementById('button').addEventListener("click", () => {
                                         document.getElementById("jsondata").innerHTML = "Renglones Estado de Cuenta: "+reng_EC+"\nRenglones SICAS: "+reng_SICAS+"\n";
                                      document.getElementById("jsondata1").innerHTML = tabla+tablaNA+"</table>"; //Se manda la tabla pero no se va a ver porque tiene HIDDEN
 
+
                                        
                                     } 
+
+                                     
+                                    }
+
                                     ExportToExcel('xlsx'); //Se llama la función para que convierta a XLSX directamente.
                                     if(resultObject==0){
                                         document.getElementById("jsondata1").innerHTML = "No se encontró ninguna fianza";

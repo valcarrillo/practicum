@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
         crossorigin="anonymous">
-    <title>CHUBB</title>
+    <title>Aserta</title>
      <!-- Font Awesome icons (free version)-->
      <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
      <!-- Simple line icons-->
@@ -30,7 +30,7 @@
                       <a class="logo" href="../index.html">
                           <span class="symbol"><img src="../img/hoken.png" alt="" /></span><span class="title">Hoken  Conciliador | Aserta </span>
                       </a>
-                      <a href="javascript:window.open('../Aserta/manual.html','','width=600,height=400,left=50,top=50,toolbar=yes');void 0"><img src="../img/pregunta.png" style="width:20px;"></a> 
+                      <a href="javascript:window.open('Manual de uso Aserta.pdf','','width=600,height=400,left=50,top=50,toolbar=yes');void 0"><img src="../img/pregunta.png" style="width:20px;"></a> 
               </div>
           </header>
 
@@ -75,10 +75,11 @@
     <div class="row">
       <div class="col-md-1"></div>
       <pre class="d1" id="jsondata"></pre>
+      <pre class="d1" id="jsondata1"></pre>
     </div> 
     </div>
 </body>
-<script src="chubb.js"></script>
+<script src="Aserta.js"></script>
 <!-- SCRIPT PARA QUE LOS BOTONES SE VEAN BONITOS -->
 <!-- Traído de https://speckyboy.com/custom-file-upload-fields/ Ejemplo 8: Flat UI Input File -->
 <script>
@@ -96,10 +97,12 @@ button.addEventListener( "keydown", function( event ) {
         fileInput.focus();  
     }  
 });
+
 button.addEventListener( "click", function( event ) {
    fileInput.focus();
    return false;
 });  
+
 fileInput.addEventListener( "change", function( event ) {  
     the_return.innerHTML = this.value;  
 }); 
