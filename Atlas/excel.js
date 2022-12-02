@@ -155,7 +155,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                         try { //Si el primer objeto de SICAS tiene póliza al igual que el primer objeto de Berkley, entonces hace la comparación.
                                 //Si no encuentra estos campos en los primeros objetos, mandará que no se pudo leer el archivo
                              if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoBerkley[0].hasOwnProperty('Póliza'))){
-                                document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
+                                document.getElementById("jsondata").innerHTML = "No se pudo leer  el documento. Revise haber adjuntado el correcto.";
                               }else{
                             reng_EC=objetoBerkley.length; //Se cuentan los renglones/objetos de Berkley
 
