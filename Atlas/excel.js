@@ -89,7 +89,8 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                   */
 
                   search = (key, endo, ArraySICAS) => { //Se manda la póliza (key), inclusión (inclu) y endoso (endo) de un objeto Berkley con todo el Array de Sicas
-                      for (let i=0; i < ArraySICAS.length; i++) { //Este ciclo comparará el renglón de Berkley con cada renglón de SICAS
+                    console.log(ArraySICAS.length)  
+                    for (let i=0; i < ArraySICAS.length; i++) { //Este ciclo comparará el renglón de Berkley con cada renglón de SICAS
                         encontrar=0; //Encontrar =0 significa que no se ha encontrado nada
                         var pol = ArraySICAS[i].Poliza.toString().split('-');  //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
                         SICASpoliza = pol[3]; //póliza de sicas
@@ -122,7 +123,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                         tipodif="Prima Neta y % Comisión"; //La diferencia estuvo en la prima neta y % de comisión
                                     }else if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"]){
                                         tipodif="Prima Neta"; //diferencia en prima neta
-                                    }else if(berkley["Moneda"] !=ArraySICAS[i].TC){
+                                   }else if(berkley["Moneda"] !=ArraySICAS[i].TC){
                                             tipodif="Tipo de Cambio"; //la diferencia está en el tipo de cambio
                                     }else{
                                         tipodif="Total Comisión"; //En caso de no ser la diferencia en niguna de las anteriores, simplemente se registra como diferencia en Total de comisión
@@ -143,11 +144,10 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                         }
                       encontrar=0; // Se reestablece la bandera
                     }
-                    
+                
                     //#################################################################
                     //###########FUNCIÓN QUE MANDA A LLAMAR LA BÚSQUEDA################ 
                     //#################################################################
-                   
                         try { //Si el primer objeto de SICAS tiene póliza al igual que el primer objeto de Berkley, entonces hace la comparación.
                                 //Si no encuentra estos campos en los primeros objetos, mandará que no se pudo leer el archivo
                              if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoBerkley[0].hasOwnProperty('Póliza'))){
