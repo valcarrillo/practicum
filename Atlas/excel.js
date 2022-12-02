@@ -106,13 +106,15 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                             SICASendoso= 0; //Si el endoso no está en SICAS entonces se registra como 1
                         }else{
                             SICASendoso= +SICASendoso +1; //Si hay endoso, se le suma 1, porque Berkley registra el primer endoso como 1
-                        }
+                        }  
+                        if (SICASendoso == endo) {   
                         //Busqueda
+                        console.log("Key"+ key)
                           if (numpoliza == key) { //póliza SICAS == póliza Berkley)
                             //if (SICASinclusion == inclu) { //inclusión SICAS == inclusión Berkley?
-                                if (SICASendoso == endo) { //endoso SICAS == endoso Berkley?
+                            //endoso SICAS == endoso Berkley?
                                     encontrar=1; //Si los tres campos anteriores coinciden, se encontó la póliza. Entonces la bandera es 1
-
+                                    
                                 //FUNCIONES QUE REDONDEAN LOS VALORES Y MULTIPLICAN POR EL TIPO DE CAMBIO
                                 importeSicas=Math.round(ArraySICAS[i]["Importe"]*ArraySICAS[i].TC*100)/100;// Esto es para que solo cuente los primeros dos decimales
                                 importeBerkley=Math.round(berkley["Abono"]*berkley["Moneda"]*100)/100;
@@ -128,10 +130,10 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                     }else{
                                         tipodif="Total Comisión"; //En caso de no ser la diferencia en niguna de las anteriores, simplemente se registra como diferencia en Total de comisión
                                     }
+                                    
                                 if(importeBerkley != importeSicas){ //Si el importe es diferente, es decir, si hay diferencia o la resta en diferente a 0, se registra en tabal de diferencias. El campo Póliza incluye la póliza y la inclusión"</td><td>"+berkley.COMISIONES+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                                     tabladiferencias=tabladiferencias+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado o Fiado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+berkley["Póliza"]+"</td><td>";
                                 }else{ //Si la resta es == 0, es decir, son iguales, se registra en la tabla de iguales
-                                    
                                     tablaiguales=tablaiguales+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado o Fiado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+berkley["Póliza"]+"</td><td>"+diferencia+"</td><td></td></tr>";
                                 }
                               return ArraySICAS[i]; //Se regresa el objeto de SICAS que se encontró.
@@ -173,7 +175,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                 berkley=objetoBerkley[j]; //berkley es donde se guarda SOLO UN objeto/renglón de Berkley, el que se va a mandar a buscar
                                 poliza=objetoBerkley[j].POLIZA //aquí se guarda la póliza de berkley
                                 //inclusion=objetoBerkley[j].INCLUSION //aqui se guarda la inclusión
-                                movimiento=objetoBerkley[j].MOVIMIENTO //aquí el movimiento o endoso. Ver terminología
+                                movimiento=objetoBerkley[j].Endoso //aquí el movimiento o endoso. Ver terminología
                                 //Manda a llamar a la función de búsqueda y el resultado lo pone en resultObject.
                                                 //póliza, inclusión, endoso o movimiento, todos los objetos de SICAS
                             resultObject = search(poliza, movimiento, objetoSICAS);
