@@ -71,8 +71,8 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                   let tablanoencontrados="";    //Aqui se guardan los datos no encontrados. Se unen al final para tener más orden.
                   let tablaiguales=""; //Aquí se almacenan los que no tienen diferencias. Solo es por estilo.
 
-                  /************************************/
-                  /***********FUNCIÓN SEARCH**********/
+                  /************/
+                  /****FUNCIÓN SEARCH***/
                   //Esta función se llama más abajo//
                   //Encontrar una póliza de Berkley dento de todos los de SICAS
 
