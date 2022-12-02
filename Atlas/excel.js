@@ -120,7 +120,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                     var tipodif; //aquí se registrará en dónde se encuentra la diferencia en cado de que exita.
                                     if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"] && berkley["% COMISION"] !=ArraySICAS[i]["% Participacion"]){
                                         tipodif="Prima Neta y % Comisión"; //La diferencia estuvo en la prima neta y % de comisión
-                                    }else if(berkley["PRIMA NETA"] !=ArraySICAS[i]["PrimaNeta"]){
+                                    }else if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"]){
                                         tipodif="Prima Neta"; //diferencia en prima neta
                                     }else if(berkley["Moneda"] !=ArraySICAS[i].TC){
                                             tipodif="Tipo de Cambio"; //la diferencia está en el tipo de cambio
@@ -202,7 +202,7 @@ function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('BerkleyFianzas'); //Nombre de la tabla: 'BerkleyFianzas'
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     //Nombre del documento
-    var nombre ='CONCILIACIÓN BERKLEY FIANZAS DEL '+".";
+    var nombre ='CONCILIACIÓN ATLAS FIANZAS DEL '+".";
     return dl ? //Va a tratar de forzar un client-side download.
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
       XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
