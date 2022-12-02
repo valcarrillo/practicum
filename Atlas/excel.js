@@ -24,7 +24,7 @@ let jsonObj;
 document.getElementById('button').addEventListener("click", () => {
     var reng_SICAS=0;
     var reng_EC=0; 
-    var tabla = " <table id='Atlas' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia Comisión MXN</th><th>Incidencia</th></tr>";
+    var tabla = " <table id='Atlas' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia Comisión MXN</th><th>Incidencia</th></tr>";
     let tablaNA ="";
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
         for(i=0; i<numarchivos; i++){
@@ -57,8 +57,8 @@ document.getElementById('button').addEventListener("click", () => {
                   console.log(objetoSICAS);
                   jsonObj={};
                   // Función para transformar Sicas
+                  try {
                   for (var w=0; w<objetoSICAS.length-1;w++){
-                    console.log
                     var pol = objetoSICAS[w].Poliza.toString().split('-');  //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
                     var SICASpoliza = pol[3];
                     var pol_sig = objetoSICAS[w+1].Poliza.toString().split('-'); //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
@@ -73,7 +73,7 @@ document.getElementById('button').addEventListener("click", () => {
                         var abono = objetoSICAS[w].Importe + objetoSICAS[w+1].Importe
                          serie_transformada = objetoSICAS[w].Serie.toString().split('/')
                          serie_final = +serie_transformada[0] * 100
-                        console.log("\nRenglon :"+w+"'n\Abono="+ abono +"\nSerie"+serie_final)
+                        //console.log("\nRenglon :"+w+"'n\Abono="+ abono +"\nSerie"+serie_final)
                         jsonObj={"Concepto": objetoSICAS[w]["Nombre Asegurado o Fiado"],"Poliza": SICASpoliza,"Moneda":objetoSICAS[w]["Moneda"],"Recibo":serie_final, "FechaPago":objetoSICAS[w]["FechaPago"],"TC": objetoSICAS[w]["TC"], "Prima neta":objetoSICAS[w]["PrimaNeta"], "Abono":abono};
                      objetoSICAStransformado.push(jsonObj);
                     jsonObj={};
@@ -83,7 +83,7 @@ document.getElementById('button').addEventListener("click", () => {
                         var abono = objetoSICAS[w].Importe
                         serie_transformada = objetoSICAS[w].Serie.toString().split('/')
                          serie_final = +serie_transformada[0] * 100
-                        console.log("\nRenglon :"+w+"'n\Abono="+ abono +"\nSerie"+serie_final)
+                        //console.log("\nRenglon :"+w+"'n\Abono="+ abono +"\nSerie"+serie_final)
                         jsonObj={"Concepto": objetoSICAS[w]["Nombre Asegurado o Fiado"],"Poliza": SICASpoliza,"Moneda":objetoSICAS[w]["Moneda"],"Endoso":objetoSICAS[w]["Endoso"],"Recibo":serie_final, "FechaPago":objetoSICAS[w]["FechaPago"],"TC": objetoSICAS[w]["TC"], "Prima neta":objetoSICAS[w]["PrimaNeta"], "Abono":abono};
                      objetoSICAStransformado.push(jsonObj);
                     jsonObj={};
@@ -96,6 +96,13 @@ document.getElementById('button').addEventListener("click", () => {
                             var errores="";
                           var diferencias ="";
                           var encontrar =0;
+                          var endosoSicas = String[ArraySICAS[i]["Endoso"]]
+                          var endoso = "";
+                          
+                          if (endosoSicas == undefined){
+                            endoso= "0"
+                          }
+                          console.log(endoso)
                             if(key == ArraySICAS[i].Poliza && recibo == ArraySICAS[i].Recibo){
                                 encontrar = 1;
                                 //Comparar abono
@@ -108,16 +115,18 @@ document.getElementById('button').addEventListener("click", () => {
                                     var diferenciaCB= Math.round((atlas["Abono"] - ArraySICAS[i]["Abono"])*100)/100;
                                     diferencias = diferencias + String(diferenciaCB) + "\n" 
                                 }
-
-                                //Arreglar columnas
-                                var tabla_sicas = ArraySICAS[i]['Concepto']+"\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+ArraySICAS[i]['Endoso']+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
-                                var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Poliza']+"</td><td></td><td>"+atlas['TC']+"</td><td></td><td></td><td>"+atlas['Abono']+"</td><td></td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td></td><td>NO SE ENCONTRÓ</td>"
-                                  tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
+                                if (endoso != atlas['Endoso']){
+                                  errores = errores + "-Endoso"
+                                }
+                                var tabla_sicas = ArraySICAS[i]['Concepto']+"\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+endoso+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>"+ArraySICAS[i]['TC']+"\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
+                                var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Póliza']+"</td><td>"+atlas['Endoso']+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td><td>"+atlas['Abono']+"</td><td style='color:var(--b0s-rojo1)'></td><td>"+diferencias+"</td>"
+                                tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                             }
+                            
                         }
                         if (encontrar == 0){
                             //Arreglar columnas
-                            var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Poliza']+"</td><td></td><td>"+atlas['TC']+"</td><td></td><td></td><td>"+atlas['Abono']+"</td><td></td>"+ "</td><td style='color:var(--b0s-rojo1)'></td><td></td><td>NO SE ENCONTRÓ</td>"
+                            var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Póliza']+"</td><td>"+endoso+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td>"+atlas['Abono']+"<td></td><td></td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
                             var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
                             tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"     
                         }
@@ -148,9 +157,13 @@ document.getElementById('button').addEventListener("click", () => {
                       }
                       //setInterval("location.reload()",10);
             }
-            );
+          catch (error) { //Si hay un error aquí se muestra.
+            document.getElementById("jsondata").innerHTML = "Algo salió mal al leer el documento. Revise que el encabezado tenga el formato correcto. Error: "+error;
+          }
+        });
              
             }
+            
         } else{
              document.getElementById("jsondata").innerHTML = "No se adjuntó nada en SICAS";
         }
