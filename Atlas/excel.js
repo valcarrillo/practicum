@@ -71,8 +71,8 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                   let tablanoencontrados="";    //Aqui se guardan los datos no encontrados. Se unen al final para tener más orden.
                   let tablaiguales=""; //Aquí se almacenan los que no tienen diferencias. Solo es por estilo.
 
-                  /************************************/
-                  /***********FUNCIÓN SEARCH**********/
+                  /************/
+                  /****FUNCIÓN SEARCH***/
                   //Esta función se llama más abajo//
                   //Encontrar una póliza de Berkley dento de todos los de SICAS
 
@@ -102,35 +102,32 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                         }*/
                         numpoliza = +SICASpoliza; //se convierte la póliza en un número para borrar los 0s anteriores
                         var SICASendoso=ArraySICAS[i].Endoso; //Aquí se toma en endoso de SICAS
-                        if(typeof SICASendoso === ''){
+                        if(typeof SICASendoso === ' '){
                             SICASendoso= 0; //Si el endoso no está en SICAS entonces se registra como 1
                         }else{
                             SICASendoso= +SICASendoso +1; //Si hay endoso, se le suma 1, porque Berkley registra el primer endoso como 1
-                        }  
-                        if (SICASendoso == endo) {   
+                        }
                         //Busqueda
-                        console.log("Key"+ key)
                           if (numpoliza == key) { //póliza SICAS == póliza Berkley)
                             //if (SICASinclusion == inclu) { //inclusión SICAS == inclusión Berkley?
-                            //endoso SICAS == endoso Berkley?
+                                if (SICASendoso == endo) { //endoso SICAS == endoso Berkley?
                                     encontrar=1; //Si los tres campos anteriores coinciden, se encontó la póliza. Entonces la bandera es 1
-                                    
+
                                 //FUNCIONES QUE REDONDEAN LOS VALORES Y MULTIPLICAN POR EL TIPO DE CAMBIO
                                 importeSicas=Math.round(ArraySICAS[i]["Importe"]*ArraySICAS[i].TC*100)/100;// Esto es para que solo cuente los primeros dos decimales
                                 importeBerkley=Math.round(berkley["Abono"]*berkley["Moneda"]*100)/100;
                                     //Esta operación saca la diferencia de los datos anteriores
                                     var diferencia= Math.round((importeBerkley -importeSicas)*100)/100;
                                     var tipodif; //aquí se registrará en dónde se encuentra la diferencia en cado de que exita.
-                                    if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"] && berkley["% COMISION"] !=ArraySICAS[i]["% Participacion"]){
+                                    if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"]){
                                         tipodif="Prima Neta y % Comisión"; //La diferencia estuvo en la prima neta y % de comisión
-                                    }else if(berkley["PRIMA NETA"] !=ArraySICAS[i]["PrimaNeta"]){
+                                    }else if(berkley["Prima neta"] !=ArraySICAS[i]["PrimaNeta"]){
                                         tipodif="Prima Neta"; //diferencia en prima neta
-                                    }else if(berkley["Moneda"] !=ArraySICAS[i].TC){
+                                   }else if(berkley["Moneda"] !=ArraySICAS[i].TC){
                                             tipodif="Tipo de Cambio"; //la diferencia está en el tipo de cambio
                                     }else{
                                         tipodif="Total Comisión"; //En caso de no ser la diferencia en niguna de las anteriores, simplemente se registra como diferencia en Total de comisión
                                     }
-                                    
                                 if(importeBerkley != importeSicas){ //Si el importe es diferente, es decir, si hay diferencia o la resta en diferente a 0, se registra en tabal de diferencias. El campo Póliza incluye la póliza y la inclusión"</td><td>"+berkley.COMISIONES+"</td><td></td><td>"+diferencia+"</td><td>"+tipodif+"</td></tr>";
                                     tabladiferencias=tabladiferencias+"<tr><td>"+ArraySICAS[i]["Nombre Asegurado o Fiado"]+"</td><td>"+ArraySICAS[i].Poliza+"</td><td>"+ArraySICAS[i].Endoso+"</td><td>"+ArraySICAS[i].Moneda+"</td><td>'"+ArraySICAS[i].Serie+"'</td><td>"+ArraySICAS[i].TC+"</td><td>"+ArraySICAS[i].PrimaNeta+"</td><td>"+ArraySICAS[i]["Tipo Comision"]+"</td><td>"+ArraySICAS[i].Importe+"</td><td>"+ArraySICAS[i]["% Participacion"]+"</td><td></td><td>"+berkley["Póliza"]+"</td><td>";
                                 }else{ //Si la resta es == 0, es decir, son iguales, se registra en la tabla de iguales
@@ -155,7 +152,7 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                         try { //Si el primer objeto de SICAS tiene póliza al igual que el primer objeto de Berkley, entonces hace la comparación.
                                 //Si no encuentra estos campos en los primeros objetos, mandará que no se pudo leer el archivo
                              if(typeof objetoSICAS[0].Poliza === 'undefined' || !(objetoBerkley[0].hasOwnProperty('Póliza'))){
-                                document.getElementById("jsondata").innerHTML = "No se pudo leer  el documento. Revise haber adjuntado el correcto.";
+                                document.getElementById("jsondata").innerHTML = "No se pudo leer el documento. Revise haber adjuntado el correcto.";
                               }else{
                             reng_EC=objetoBerkley.length; //Se cuentan los renglones/objetos de Berkley
 
@@ -173,9 +170,10 @@ document.getElementById('button').addEventListener("click", () => { //Cuando se 
                                     }*/
                                 
                                 berkley=objetoBerkley[j]; //berkley es donde se guarda SOLO UN objeto/renglón de Berkley, el que se va a mandar a buscar
-                                poliza=objetoBerkley[j].POLIZA //aquí se guarda la póliza de berkley
+                                poliza=objetoBerkley[j].Póliza //aquí se guarda la póliza de berkley
                                 //inclusion=objetoBerkley[j].INCLUSION //aqui se guarda la inclusión
                                 movimiento=objetoBerkley[j].Endoso //aquí el movimiento o endoso. Ver terminología
+                            
                                 //Manda a llamar a la función de búsqueda y el resultado lo pone en resultObject.
                                                 //póliza, inclusión, endoso o movimiento, todos los objetos de SICAS
                             resultObject = search(poliza, movimiento, objetoSICAS);
@@ -205,7 +203,7 @@ function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('BerkleyFianzas'); //Nombre de la tabla: 'BerkleyFianzas'
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     //Nombre del documento
-    var nombre ='CONCILIACIÓN BERKLEY FIANZAS DEL '+".";
+    var nombre ='CONCILIACIÓN ATLAS FIANZAS DEL '+".";
     return dl ? //Va a tratar de forzar un client-side download.
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
       XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
