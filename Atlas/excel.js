@@ -63,8 +63,11 @@ document.getElementById('button').addEventListener("click", () => {
                     var SICASpoliza = pol[3];
                     var pol_sig = objetoSICAS[w+1].Poliza.toString().split('-'); //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
                     var SICASpoliza_sig = pol_sig[3];
+                    var pol_sig_sig = objetoSICAS[w+2].Poliza.toString().split('-');  //Divide la póliza de SICAS por '-' . La posición 2 es la fianza y la 3 es la inclusión
+                    var SICASpolizasig_sig = pol_sig_sig[3];
                     var tipo_comision= String(objetoSICAS[w]["Tipo Comision"])  
                     var tipo_comision_sig= String(objetoSICAS[w+1]["Tipo Comision"]) 
+                    var tipo_comision_sig_sig= String(objetoSICAS[w+1]["Tipo Comision"]) 
                     var serie = String(objetoSICAS[w]["Serie"]) 
                     var serie_sig = String(objetoSICAS[w+1]["Serie"]) 
                     var serie_transformada = ""
@@ -118,15 +121,15 @@ document.getElementById('button').addEventListener("click", () => {
                                 if (endoso != atlas['Endoso']){
                                   errores = errores + "-Endoso"
                                 }
-                                var tabla_sicas = ArraySICAS[i]['Concepto']+"\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+endoso+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>"+ArraySICAS[i]['TC']+"\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
-                                var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Póliza']+"</td><td>"+atlas['Endoso']+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td><td>"+atlas['Abono']+"</td><td style='color:var(--b0s-rojo1)'></td><td>"+diferencias+"</td>"
+                                var tabla_sicas = "\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+endoso+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>"+ArraySICAS[i]['TC']+"\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
+                                var tabla_EC = "<td></td><td>"+atlas['Póliza']+"</td><td>"+atlas['Endoso']+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td><td>"+atlas['Abono']+"</td><td style='color:var(--b0s-rojo1)'></td><td>"+diferencias+"</td>"
                                 tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                             }
                             
                         }
                         if (encontrar == 0){
                             //Arreglar columnas
-                            var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Póliza']+"</td><td>"+endoso+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td>"+atlas['Abono']+"<td></td><td></td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
+                            var tabla_EC = "<td></td><td>"+atlas['Póliza']+"</td><td>"+endoso+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td>"+atlas['Abono']+"<td></td><td></td><td style='color:var(--b0s-rojo1)'></td><td>NO SE ENCONTRÓ</td>"
                             var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
                             tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"     
                         }
