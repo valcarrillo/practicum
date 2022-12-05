@@ -107,10 +107,10 @@ document.getElementById('button').addEventListener("click", () => {
                           }
                           console.log(endoso)
                             if(key == ArraySICAS[i].Poliza && recibo == ArraySICAS[i].Recibo){
-                                encontrar = 1;
+                                encontrar ++;
                                 //Comparar abono
-                                if(String(ArraySICAS[i]['Abono']) != atlas['Abono']){
-                                var diferenciaCB= Math.round((atlas["Abono"] - ArraySICAS[i]["Abono"])*100)/100;
+                                if(String(ArraySICAS[i]['Abono'])*ArraySICAS[i]["TC"] != atlas['Abono']){
+                                var diferenciaCB= Math.round((atlas["Abono"] - ArraySICAS[i]["Abono"]*ArraySICAS[i]["TC"])*100)/100;
                                   diferencias = diferencias + String(diferenciaCB) + "\n"
                                   errores = errores + "- Comisión \n"
                                 }
@@ -121,8 +121,8 @@ document.getElementById('button').addEventListener("click", () => {
                                 if (endoso != atlas['Endoso']){
                                   errores = errores + "-Endoso"
                                 }
-                                var tabla_sicas = "\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+endoso+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>"+ArraySICAS[i]['TC']+"\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
-                                var tabla_EC = "<td></td><td>"+atlas['Póliza']+"</td><td>"+atlas['Endoso']+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td><td>"+atlas['Abono']+"</td><td style='color:var(--b0s-rojo1)'></td><td>"+diferencias+"</td>"
+                                var tabla_sicas = ArraySICAS[i]['Concepto']+"\t<td>"+ArraySICAS[i]['Poliza']+"\t</td><td>"+endoso+"\t</td><td>"+ArraySICAS[i]['Moneda']+"\t</td><td>'"+ArraySICAS[i]['Recibo']+"'\t</td><td>"+ArraySICAS[i]['TC']+"\t</td><td>"+ArraySICAS[i]['Prima neta']+"\t</td><td>\t</td><td>"+ArraySICAS[i]['Abono']+"\t</td><td>\t</td>"
+                                var tabla_EC = "<td>"+atlas['Concepto']+"</td><td>"+atlas['Póliza']+"</td><td>"+atlas['Endoso']+"</td><td>"+atlas['Moneda']+"</td><td>"+atlas['Recibo']+"</td><td></td><td>"+atlas['Abono']+"</td><td style='color:var(--b0s-rojo1)'></td><td>"+diferencias+"</td>"
                                 tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                             }
                             
@@ -133,6 +133,7 @@ document.getElementById('button').addEventListener("click", () => {
                             var tabla_sicas ="Invalido<td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td><td>Invalido</td>"
                             tablaNA=tablaNA+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+"</td><td>--</td>"+tabla_EC+"</tr>"     
                         }
+                        encontrar=0;
                     }
                     //Dar formato a la tabla 
                     
