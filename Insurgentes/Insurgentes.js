@@ -313,7 +313,7 @@ document.getElementById('button').addEventListener("click", () => {
 function ExportToExcel(type, fn, dl) {// función que convierte a excel
     var elt = document.getElementById('Aserta');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-    var nombre ='CONCILIACIÓN ASERTA DEL '+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+".";
+    var nombre ='CONCILIACIÓN INSURGENTES DEL '+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+".";
     return dl ?
       XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
       XLSX.writeFile(wb, fn || (nombre + (type || 'xlsx')));
