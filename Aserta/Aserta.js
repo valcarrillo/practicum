@@ -55,6 +55,7 @@ document.getElementById('button').addEventListener("click", () => {
              let workbook2 = XLSX.read(data2,{type:"binary"});
              workbook2.SheetNames.forEach(sheet => {
                   objetoSICAS = XLSX.utils.sheet_to_row_object_array(workbook2.Sheets[sheet]); //Nombre del array
+                  console.log("objeto Sicas:");
                   console.log(objetoSICAS);
                     //La tabla tiene atributo HIDDEN para que no se vea, pero ahí está.
                                   
@@ -99,9 +100,26 @@ document.getElementById('button').addEventListener("click", () => {
                             }
                             //Obtener importe mxn
                             importe_mxn= (ArreySICAS[i]["Importe"]*ArreySICAS[i]["TC"])
-                            if (polizaSicas == key && factura == facturaSicas ) { 
+                            if(factura == facturaSicas){
+                                console.log("\nFactura EC:"+factura+"Factura Sicas:"+facturaSicas)
+                            }
+                            if (polizaSicas == key && factura == facturaSicas) { 
                                 encontrar++; // Se utiliza como indicador de que si se encontró el renglon buscado
-                              //Prima Neta
+                                if(comision == 'Comisión Base o de Neta'){
+                                    porcentaje = String(aserta["% de Comisión"])
+                                    comision_I = String(aserta["Comisión"])
+                                 }
+                                 else if(comision == 'Comisión de Derechos'){
+                                     porcentaje = String(aserta["% Maquila"])
+                                     comision_I = String(aserta["Comisión Gtos. Exp."])
+                                 }
+                                 else if(comision == 'Comisión Especial'){
+                                      porcentaje = String(aserta["%Incentivo Prod-Renov"])
+                                      comision_I = String(aserta["Incentivo Prod-Renov"])
+                                 }
+                                 
+                                 
+                                //Prima Neta
                               if(aserta["Prima Neta"] != ArreySICAS[i]["PrimaNeta"]){
                                  //var diferencia= Math.round((aserta["Prima Neta"] - ArreySICAS[i]["PrimaNeta"] )*100)/100;
                                                   errores =  errores + "- Prima Neta\n"
@@ -181,7 +199,7 @@ document.getElementById('button').addEventListener("click", () => {
                                   // Comparación de comisiones Base  diferentes, se obtiene la diferencia entre ellas y se registra el error
                                   if(importe_mxn != aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
                                       var diferenciaCB= Math.round((aserta["Comisión"] - importe_mxn)*100)/100;
-                                      diferenciaCB=Math.round(diferenciaCB/Number(TC)*100)/100
+                                      diferenciaCB=Math.round(diferenciaCB*100)/100
                                       diferencias = diferencias + String(diferenciaCB) + "\n"
                                       errores = errores + "- Comisión \n"
                                       //Comparación de tipode cambio, si existe, se registra el error
@@ -192,7 +210,7 @@ document.getElementById('button').addEventListener("click", () => {
                                   // Comparación de comisiones Base  iguales, se obtiene la diferencia entre ellas 
                                   else if(ArreySICAS[i]["Importe"] == aserta["Comisión"] && comision == 'Comisión Base o de Neta'){
                                       var diferenciaCB= Math.round((aserta["Comisión"] - ArreySICAS[i]["Importe"])*100)/100;
-                                      diferenciaCB=Math.round(diferenciaCB/Number(TC)*100)/100
+                                      diferenciaCB=Math.round(diferenciaCB*100)/100
                                       diferencias = diferencias + String(diferenciaCB) + "\n"
                                   }
                                   // Comparación de % de comisiones Base  diferentes, se obtiene la diferencia entre ellas y se registra el error
@@ -265,11 +283,11 @@ document.getElementById('button').addEventListener("click", () => {
                                 }                                            
                                   
                               }
-                                console.log("Fecha max: "+fechamax+"\nFecha min:"+fechamin)
+                                
                                 //datos del renglon de sicas que se esté comparando
                                   var tabla_sicas = ArreySICAS[i]['Nombre Asegurado o Fiado']+"\t<td>"+ArreySICAS[i]['Poliza']+"\t</td><td>"+ArreySICAS[i]['Endoso']+"\t</td><td>"+ArreySICAS[i]['Moneda']+"\t</td><td>'"+ArreySICAS[i]['Serie']+"'\t</td><td>"+ArreySICAS[i]['TC']+"\t</td><td>"+ArreySICAS[i]['PrimaNeta']+"\t</td><td>"+ArreySICAS[i]['Tipo Comision']+"\t</td><td>"+ArreySICAS[i]['Importe']+"\t</td><td>"+ArreySICAS[i]['% Participacion']+"\t</td>"
                                   //datos del renglo del Estado de Cuenta que se esté comparando
-                                  var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td></td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "<td>"+diferenciasP+"</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
+                                  var tabla_EC = "<td>"+aserta['Fiado/Contratante']+"</td><td>"+aserta['No Fianza/Certificado']+"</td><td>"+aserta['Folio Factura']+"<td>"+aserta['Mov']+"</td><td>"+aserta['Moneda']+"</td><td></td><td>"+porcentaje+"</td><td>"+comision_I+"</td></td><td>"+TC_EstadoCuenta+"</td>"+ "<td>"+diferenciasP+"</td><td style='color:var(--b0s-rojo1)'>"+diferencias+"</td>"
                                   tabla=tabla+"<tr><td style='background-color:var(--bs-azul3)'>"+tabla_sicas+ "<td></td>"+tabla_EC +"<td>"+errores+"</td></tr>"  
                           }
                         }
@@ -288,7 +306,8 @@ document.getElementById('button').addEventListener("click", () => {
                           var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
                           var factura =  String (objetoAserta[j]["Folio Factura"]);
                           aserta=objetoAserta[j];
-                          if(poliza && poliza.lastIndexOf('-') != -1 && factura){
+                          //Logitud máxima de la poliza = 20, deben tener -
+                          if(poliza.length<20 && poliza.lastIndexOf('-') != -1 && factura){
                               reng_EC = reng_EC + 1;
                               resultObject = search(poliza, objetoSICAS,factura)
                           }                       
