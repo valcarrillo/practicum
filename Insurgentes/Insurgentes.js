@@ -17,7 +17,7 @@ document.getElementById('inputSicas').addEventListener("change", (event) => {// 
 )
 
 let objetoSICAS; //Array de objetos en el que se va a guarar SICAS
-let objetoAserta=[]; //Array de objetos en el que se va a guardar CHUBB
+let objetoInsurgentes=[]; //Array de objetos en el que se va a guardar CHUBB
 var fechamax = new Date("2000-01-02"); // (YYYY-MM-DD)
 var fechamin = new Date("2100-01-01"); // (YYYY-MM-DD)
 const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
@@ -25,7 +25,7 @@ const month = ["Nada","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","
 document.getElementById('button').addEventListener("click", () => {
     var reng_SICAS=0;
     var reng_EC=0; 
-    let tabla ="<table id='Aserta' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia % Comisión</th><th>Diferencia Comisión</th><th>Incidencia</th></tr>";
+    let tabla ="<table id='Insurgentes' width='90%' border='1' cellpadding='0' cellspacing='0' bordercolor='#0000001' HIDDEN ><tr><td colspan='10'>SICAS</td><td>--</td><td colspan ='11'>ESTADOS DE CUENTA</td></tr><tr><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>Tipo Cambio</th><th>Prima Neta</th><th>Tipo Comisión</th><th>Importe</th><th>% Participación</th><th>--</th><th>Nombre Asegurado o Fiado</th><th>Póliza</th><th>Folio Factura</th><th>Endoso</th><th>Moneda</th><th>Serie Recibo</th><th>% Comisión</th><th>Comisión</th><th>Tipo Cambio</th><th>Diferencia % Comisión</th><th>Diferencia Comisión</th><th>Incidencia</th></tr>";
     let tablaNA ="";
     if(selectedFile){ //Función para convertir Edo de Cuenta en array de objetos
         for(i=0; i<numarchivos; i++){
@@ -40,13 +40,13 @@ document.getElementById('button').addEventListener("click", () => {
                 //objetoCHUBB=Object.assign(objetoCHUBB,objeto);
                 //objeto={};
                 for(var j=0; j<objeto.length; j++){
-                    objetoAserta.push(objeto[j]);
+                    objetoInsurgentes.push(objeto[j]);
                 }
          });
         }
         }
-        console.log("objeto Aserta:");
-         console.log(objetoAserta);
+        console.log("objeto Insurgentes:");
+         console.log(objetoInsurgentes);
          if(selectedFile2){ //Función que convierte SICAS en array de objetos
             let fileReader = new FileReader();
             fileReader.readAsBinaryString(selectedFile2);
@@ -273,10 +273,10 @@ document.getElementById('button').addEventListener("click", () => {
                           encontrar=0;
                     }
                     
-                      for(var j=0; j<objetoAserta.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
-                          var poliza =  String (objetoAserta[j]["No Fianza/Certificado"])
-                          var factura =  String (objetoAserta[j]["Folio Factura"]);
-                          aserta=objetoAserta[j];
+                      for(var j=0; j<objetoInsurgentes.length; j++){ //Ciclo que va a buscar cada poliza de SICAS en Berkley
+                          var poliza =  String (objetoInsurgentes[j]["No Fianza/Certificado"])
+                          var factura =  String (objetoInsurgentes[j]["Folio Factura"]);
+                          aserta=objetoInsurgentes[j];
                           if(poliza.length> 11 && poliza.length < 16 && poliza.lastIndexOf('-') != -1){
                               reng_EC = reng_EC + 1;
                               resultObject = search(poliza, objetoSICAS,factura)
@@ -311,7 +311,7 @@ document.getElementById('button').addEventListener("click", () => {
 });
 //fn: filename
 function ExportToExcel(type, fn, dl) {// función que convierte a excel
-    var elt = document.getElementById('Aserta');
+    var elt = document.getElementById('Insurgentes');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     var nombre ='CONCILIACIÓN INSURGENTES DEL '+fechamin.getDate()+" "+month[+fechamin.getMonth()+1]+" "+fechamin.getFullYear()+" AL "+fechamax.getDate()+" "+month[+fechamax.getMonth()+1]+" "+fechamax.getFullYear()+".";
     return dl ?
