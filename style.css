@@ -281,13 +281,13 @@ h3:hover {
 			}
 
 			#header .logo .symbol {
-				margin-right: 0.65em;
+				margin-right: 2em;
 			}
 
 				#header .logo .symbol img {
 					display: block;
-					width: 2em;
-					height: 2em;
+					width: 8em;
+					height: 7em;
 				}
 
 		@media screen and (max-width: 736px) {
